@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Classifier</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        main {
+            width: 100%;
+            max-width: 700px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 2rem;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            box-sizing: border-box; /* Important for padding to work nicely */
+        }
+        textarea {
+            min-height: 250px;
+            resize: vertical;
+        }
+        button {
+            padding: 0.85rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result-container {
+            margin-top: 2rem;
+            background: #ecf0f1;
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid #dcdcdc;
+        }
+        #result-container h2 {
+            margin-top: 0;
+        }
+        pre {
+            white-space: pre-wrap; /* Wraps the JSON text */
+            word-wrap: break-word;
+            font-family: "Courier New", Courier, monospace;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <h1>Resume Classifier 🤖</h1>
+        <form id="classify-form">
+            <div>
+                <label for="job-role">Job Role (e.g., "Sales", "Software Engineer")</label>
+                <input type="text" id="job-role" name="job-role" required>
+            </div>
+            
+            <div>
+                <label for="resume-text">Paste Full Resume Text</label>
+                <textarea id="resume-text" name="resume-text" required></textarea>
+            </div>
+
+            <button type="submit">Classify Resume</button>
+        </form>
+
+        <div id="result-container" class="hidden">
+            <h2>Classification Result:</h2>
+            <pre id="result-json"></pre>
+        </div>
+    </main>
+
+    <script>
+        // Wait for the document to be fully loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("classify-form");
+            const resultContainer = document.getElementById("result-container");
+            const resultJson = document.getElementById("result-json");
+
+            form.addEventListener("submit", async (event) => {
+                // Prevent the default form refresh
+                event.preventDefault();
+
+                // Get the values from the form
+                const jobRole = document.getElementById("job-role").value;
+                const resumeText = document.getElementById("resume-text").value;
+
+                // Create the JSON payload for the API
+                const payload = {
+                    job_role: jobRole,
+                    resume_text: resumeText
+                };
+
+                try {
+                    // Send the POST request to our Flask server
+                    const response = await fetch('/classify', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    // Get the JSON response from the server
+                    const result = await response.json();
+
+                    // Display the result
+                    resultJson.textContent = JSON.stringify(result, null, 2);
+                    resultContainer.classList.remove("hidden");
+
+                    // Set text color based on prediction
+                    if (result.prediction === 'Select') {
+                        resultJson.style.color = '#27ae60'; // Green
+                    } else {
+                        resultJson.style.color = '#c0392b'; // Red
+                    }
+
+                } catch (error) {
+                    // Show any errors
+                    resultJson.textContent = JSON.stringify({ error: "Could not connect to server. Is app.py running?" }, null, 2);
+                    resultJson.style.color = '#c0392b';
+                    resultContainer.classList.remove("hidden");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
