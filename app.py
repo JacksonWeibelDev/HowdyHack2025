@@ -4,7 +4,7 @@ from predict import classify_resume, MODEL_DIR
 
 app = Flask(__name__)
 app.config['BRAND'] = 'HowdyHack'
-app.config['SECRET_KEY'] = 'i like to play roblox';
+app.config['SECRET_KEY'] = 'i like to play roblox'
 
 @app.context_processor
 def inject_brand():
