@@ -1,0 +1,97 @@
+/* Purple radial background fading to black */
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  color: #eee;
+  background-color: #0b0010; /* fallback */
+  background-image: radial-gradient(circle at 50% 20%, rgba(68, 1, 120, 0.505) 50%, rgba(0,0,0,0.95) 100%);
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+}
+
+/* Navbar contrast */
+.navbar-dark .navbar-brand,
+.navbar-dark .nav-link {
+  color: rgba(255,255,255,0.95) !important;
+}
+.navbar-dark {
+  background-color: rgba(0,0,0,0.45) !important;
+}
+
+/* Main content card to ensure readability */
+main .container {
+  border-radius: 8px;
+  padding: 1.5rem;
+  backdrop-filter: blur(4px);
+}
+.card {
+    background-color: #2e2e2e9d;
+    color: white;   
+    background-
+}
+
+/* Form controls on light card */
+.form-control {
+  background-color: rgba(255,255,255,0.95);
+}
+
+/* Footer */
+footer {
+  background-color: rgba(0,0,0,0.45);
+}
+
+/* Spacer utility */
+.spacer-2000 { height: 2000px }
+
+/* Reveal-on-scroll helper */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms ease, transform 600ms ease;
+  will-change: opacity, transform;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Ensure two-column cards share equal width on md+ screens */
+@media (min-width: 768px) {
+  .d-flex.flex-md-row > .card {
+    box-sizing: border-box;
+    flex: 0 0 50%;
+    max-width: 50%;
+    min-width: 0; /* allow flex children to shrink properly */
+  }
+}
+
+/* Glowing card effect */
+.card-glow {
+  position: relative;
+  transition: box-shadow 250ms ease, transform 200ms ease;
+  box-shadow: 0 6px 18px rgba(54, 0, 96, 0.25);
+  border: #67676749 2px solid;
+  border-radius: 2px;
+}
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  z-index: -1;
+  border-radius: 12px;
+  background: radial-gradient(circle at 20% 20%, rgba(138,43,226,0.18), rgba(102,51,153,0.08) 30%, transparent 45%);
+  filter: blur(10px);
+  opacity: 1;
+}
+.card-glow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(75, 0, 130, 0.35);
+}
+.card-glow:hover::before {
+  filter: blur(18px);
+  opacity: 1;
+}

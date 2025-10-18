@@ -5,31 +5,46 @@
 {% block content %}
 <div class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-8">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h1 class="h3 mb-4">Resume Classifier 🤖</h1>
-
-          <form id="classify-form" novalidate>
-            <div class="mb-3">
-              <label for="job-role" class="form-label">Job Role (e.g., "Sales", "Software Engineer")</label>
-              <input type="text" id="job-role" name="job_role" class="form-control" required>
+    <div class="col-12 col-md-10">
+      <form id="classify-form" novalidate>
+        <div class="d-flex flex-column flex-md-row gap-3">
+          <!-- Left column card: job role -->
+          <div class="card card-glow flex-fill shadow-sm reveal" data-reveal>
+            <div class="card-body">
+              <h2 class="h5 mb-3">Job Role</h2>
+              <div class="mb-3">
+                <label for="job-role" class="form-label">Job Role (e.g., "Sales", "Software Engineer")</label>
+                <input type="text" id="job-role" name="job_role" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label for="job-description" class="form-label">Job Description (optional)</label>
+                <textarea id="job-description" name="job_description" class="form-control" rows="4" placeholder="Brief description of responsibilities or required skills"></textarea>
+              </div>
+              <p class="small text-muted">.</p>
             </div>
+          </div>
 
-            <div class="mb-3">
-              <label for="resume-text" class="form-label">Paste Full Resume Text</label>
-              <textarea id="resume-text" name="resume_text" class="form-control" rows="10" required></textarea>
+          <!-- Right column card: resume text + submit + results -->
+          <div class="card card-glow flex-fill shadow-sm reveal" data-reveal>
+            <div class="card-body">
+              <h2 class="h5 mb-3">Resume Text</h2>
+              <div class="mb-3">
+                <label for="resume-text" class="form-label">Paste Full Resume Text</label>
+                <textarea id="resume-text" name="resume_text" class="form-control" rows="10" required></textarea>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Classify Resume</button>
+              </div>
+
+              <div id="result-container" class="mt-4 d-none">
+                <h2 class="h5">Classification Result:</h2>
+                <pre id="result-json" class="p-3 bg-light rounded"></pre>
+              </div>
             </div>
-
-            <button type="submit" class="btn btn-primary">Classify Resume</button>
-          </form>
-
-          <div id="result-container" class="mt-4 d-none">
-            <h2 class="h5">Classification Result:</h2>
-            <pre id="result-json" class="p-3 bg-light rounded"></pre>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>
@@ -43,10 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const jobRole = document.getElementById("job-role").value;
-    const resumeText = document.getElementById("resume-text").value;
+  const jobRole = document.getElementById("job-role").value;
+  const jobDescription = document.getElementById("job-description").value;
+  const resumeText = document.getElementById("resume-text").value;
 
-    const payload = { job_role: jobRole, resume_text: resumeText };
+  const payload = { job_role: jobRole, job_description: jobDescription, resume_text: resumeText };
 
     try {
       const response = await fetch('/classify', {
@@ -66,6 +82,22 @@ document.addEventListener("DOMContentLoaded", () => {
       resultContainer.classList.remove('d-none');
     }
   });
+});
+</script>
+
+<script>
+// Reveal-on-scroll using IntersectionObserver
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 });
 </script>
 {% endblock %}
