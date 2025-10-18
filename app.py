@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
 
@@ -23,14 +23,28 @@ def contact():
     return render_template('index.html', active_page='contact', brand='HowdyHack')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('index.html', active_page='login', brand='HowdyHack')
+    if request.method == 'POST':
+        # stub: grab form data and pretend to authenticate
+        email = request.form.get('email')
+        password = request.form.get('password')
+        # TODO: add real authentication
+        flash('Login attempt for: ' + (email or ''), 'info')
+        return redirect(url_for('index'))
+    return render_template('login.html', active_page='login', brand='HowdyHack')
 
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return render_template('index.html', active_page='signup', brand='HowdyHack')
+    if request.method == 'POST':
+        # stub: collect signup data
+        name = request.form.get('name')
+        email = request.form.get('email')
+        # TODO: create user and validate
+        flash('Account created for: ' + (email or ''), 'success')
+        return redirect(url_for('login'))
+    return render_template('signup.html', active_page='signup', brand='HowdyHack')
 
 
 if __name__ == '__main__':
