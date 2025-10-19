@@ -129,8 +129,8 @@ footer {
 
 /* Hero section */
 .hero-section {
-  padding-top: 4rem;
-  padding-bottom: 2rem;
+  padding-top: 2rem;    /* reduced from 4rem to bring content up */
+  padding-bottom: 1.25rem; /* slightly tighter bottom spacing */
 }
 .hero-logo {
   width: 120px;
@@ -144,7 +144,13 @@ footer {
 
 /* spacer below hero */
 .hero-spacer {
-  height: 40rem; /* default */
+  height: 24px; /* previously larger or unspecified; lower value = less scroll */
+}
+
+/* Responsive tweaks for small screens */
+@media (max-width: 768px) {
+  .hero-section { padding-top: 1.25rem; padding-bottom: 1rem; }
+  .hero-spacer { height: 12px; }
 }
 
 /* Reusable reveal utility: add 'reveal' attribute or class to elements you want to animate in */
