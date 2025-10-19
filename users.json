@@ -1,0 +1,15 @@
+{
+    "users": {
+        "1": {
+            "email": "admin@example.com",
+            "password_hash": "password",
+            "name": "Admin User"
+        },
+        "2": {
+            "email": "weibel.jackson@gmail.com",
+            "password": "BigTest",
+            "name": "Jackson Weibel"
+        }
+    },
+    "next_user_id": 3
+}

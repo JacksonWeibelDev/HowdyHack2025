@@ -45,13 +45,28 @@
                 
 
                 <ul class="navbar-nav">
+                {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        <a class="nav-link {% if active_page == 'history' %}active{% endif %}" href="{{ url_for('history') }}">History</a>
+                         {# Assuming you will create a 'history' route #}
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-light ms-2" href="{{ url_for('signup') }}">Sign Up</a>
+                        <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+                         {# Points to the logout route we created #}
                     </li>
-                </ul>
+                     <li class="nav-item">
+                        <span class="navbar-text ms-2">Welcome, {{ current_user.name }}!</span>
+                         {# Optional: Display user's name #}
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if active_page == 'login' %}active{% endif %}" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if active_page == 'signup' %}active{% endif %}" href="{{ url_for('signup') }}">Sign Up</a>
+                    </li>
+                {% endif %}
+            </ul>
             </div>
         </div>
     </nav>

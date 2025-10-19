@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from predict import classify_resume, MODEL_DIR
 
@@ -15,12 +16,9 @@ login_manager.init_app(app)
 login_manager.login_view = 'login' # Redirect here if @login_required fails
 login_manager.login_message_category = 'info' # Category for the "Please log in" message
 
-# --- Simple In-Memory User Store (Replace with a database in a real app!) ---
-# WARNING: Storing plain text passwords like this is VERY insecure. Use hashing (e.g., werkzeug.security)!
-users = {
-    '1': {'email': 'test@example.com', 'password': 'password', 'name': 'Test User'}
-}
-next_user_id = 2 # Simple ID counter
+
+# --- File path for user data ---
+USER_DATA_FILE = 'users.json'
 
 # --- User Class ---
 class User(UserMixin):
@@ -30,7 +28,56 @@ class User(UserMixin):
         self.name = name
     # We don't store the password hash on the User object itself usually
 
-# --- User Loader Function ---
+# --- User Data Loading/Saving Functions ---
+def load_users():
+    """Loads user data from the JSON file. Creates the file with a default admin if it doesn't exist."""
+    default_users = {'1': {'email': 'admin@example.com', 'password_hash': 'password', 'name': 'Admin User'}}
+    default_next_id = 2
+
+    if not os.path.exists(USER_DATA_FILE):
+        print(f"'{USER_DATA_FILE}' not found. Creating it with default admin user.")
+        try:
+            # --- NEW: Save the default data immediately ---
+            save_users(default_users, default_next_id)
+            print(f"Successfully created '{USER_DATA_FILE}'.")
+            return default_users, default_next_id
+        except Exception as e:
+            print(f"Error creating '{USER_DATA_FILE}': {e}. Using in-memory default.")
+            return default_users, default_next_id # Fallback to in-memory
+
+    # --- Existing logic to load if file DOES exist ---
+    try:
+        with open(USER_DATA_FILE, 'r') as f:
+            data = json.load(f)
+            users_dict = data.get('users', {})
+            # Ensure next_user_id logic is robust
+            max_id = 0
+            if users_dict:
+                 numeric_ids = [int(k) for k in users_dict.keys() if k.isdigit()]
+                 if numeric_ids:
+                      max_id = max(numeric_ids)
+            next_id = data.get('next_user_id', max_id + 1)
+            # Handle case where loaded file might be empty but exists
+            if not users_dict:
+                 print(f"'{USER_DATA_FILE}' was empty. Initializing with default admin.")
+                 save_users(default_users, default_next_id)
+                 return default_users, default_next_id
+            return users_dict, next_id
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"Error loading user data from existing file: {e}. Using in-memory default.")
+        return default_users, default_next_id # Fallback
+
+def save_users(users_dict, next_id):
+    """Saves user data to the JSON file."""
+    try:
+        with open(USER_DATA_FILE, 'w') as f:
+            json.dump({'users': users_dict, 'next_user_id': next_id}, f, indent=4)
+    except IOError as e:
+        print(f"Error saving user data: {e}")
+
+users, next_user_id = load_users()
+
+# --- User Loader Function (unchanged) ---
 @login_manager.user_loader
 def load_user(user_id):
     user_data = users.get(user_id)
@@ -99,7 +146,7 @@ def login():
 
         if user_instance:
             login_user(user_instance, remember=remember)
-            flash('Logged in successfully!', 'success')
+            print('Logged in successfully!')
             # Redirect to the page they were trying to access, or index
             next_page = request.args.get('next')
             return redirect(next_page or url_for('index'))
@@ -139,6 +186,8 @@ def signup():
         users[user_id] = {'email': email, 'password': password, 'name': name}
         next_user_id += 1
 
+        save_users(users_dict=users,next_id=next_user_id)
+
         flash('Account created successfully! Please log in.', 'success')
         return redirect(url_for('login'))
 
@@ -151,6 +200,11 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
+
+@app.route('/history')
+@login_required
+def history():
+    return render_template('history.html')
 
 
 @app.route('/testing', methods=['GET'])
@@ -189,6 +243,8 @@ def classify_resume_route():
             return jsonify(result), 404 # 404 Not Found (no model for that role)
         else:
             return jsonify(result), 500 # Internal Server Error for other issues
+
+    
 
     return jsonify(result), 200
 
