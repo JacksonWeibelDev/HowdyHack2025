@@ -8,8 +8,8 @@ body {
   background-image:
     linear-gradient(
       to bottom,
-      rgba(219,67,249,0.96) 0%,
-      rgba(132,60,175,0.55) 30%,
+      rgba(72, 0, 121, 0.96) 0%,
+      rgba(97, 11, 146, 0.55) 30%,
       rgba(74,26,120,0.38) 48%,
       rgba(32,14,64,0.25) 68%,
       rgba(12,8,20,0.92) 86%,
@@ -568,4 +568,28 @@ footer {
     min-width: 120px;
     padding: .45rem .9rem;
   }
+}
+
+/* Large branded title for the hero — purple gradient text */
+.hero-brand {
+  font-family: inherit;                      /* use same font as rest of the page */
+  font-weight: 800;
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1;
+  margin-bottom: .25rem;
+  letter-spacing: -0.02em;
+
+  /* slightly pinker purple gradient */
+  background: linear-gradient(90deg, #b56aff 0%, #9410e1 45%, #7a4ef6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* remove shadow/outline so it matches body text more closely */
+  display: inline-block;
+}
+
+/* Slightly reduce intensity on very small screens */
+@media (max-width: 420px) {
+  .hero-brand { font-size: 2rem; -webkit-text-stroke: 0.45px; }
 }
