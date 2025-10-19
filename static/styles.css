@@ -5,7 +5,7 @@ body {
   background-color: #020006; /* fallback deep black */
   /* Top-focused linear gradient that fades to black, plus a subtle radial accent at the top for depth */
   background-image:
-    linear-gradient(to bottom, rgba(152,62,221,0.88) 0%, rgba(106,8,180,0.7) 28%, rgba(65, 7, 109, 0.35) 55%, rgb(27, 27, 27) 100%),
+    linear-gradient(to bottom, rgba(152,62,221,0.88) 0%, rgba(106,8,180,0.7) 28%, rgba(65, 7, 109, 0.35) 55%, rgb(0, 0, 0) 100%),
     radial-gradient(circle at 50% 6%, rgba(180,120,255,0.18) 0%, rgba(120,60,200,0.10) 30%, transparent 55%);
   min-height: 100vh;
   background-repeat: no-repeat;
