@@ -8,10 +8,17 @@ app.config['SECRET_KEY'] = 'i like to play roblox'
 
 @app.context_processor
 def inject_brand():
-    return {'brand': app.config.get('BRAND', 'Your Brand')}
-@app.route('/')
+    brand = app.config.get('BRAND', 'Your Brand')
+    # Prefer a hero image in static/hero.png when available
+    hero_path = os.path.join(app.root_path, 'static', 'hero.png')
+    if os.path.exists(hero_path):
+        brand_img = url_for('static', filename='hero.png')
+    else:
+        brand_img = None
+    return {'brand': brand, 'brand_img': brand_img}
+@app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', active_page='home')
+    return render_template('upload.html', active_page='home')
 
 @app.route('/about')
 def about():
@@ -49,9 +56,6 @@ def signup():
         return redirect(url_for('login'))
     return render_template('signup.html', active_page='signup')
 
-@app.route('/testing', methods=['GET'])
-def upload():
-    return render_template('upload.html')
 
 
 @app.route('/classify', methods=['POST'])

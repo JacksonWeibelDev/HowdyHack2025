@@ -13,7 +13,13 @@
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">{{ brand or 'Your Brand' }}</a>
+            {% if brand_img %}
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ brand_img }}" alt="{{ brand }}" class="navbar-brand-img" onerror="this.style.display='none'">
+            </a>
+            {% else %}
+            <a class="navbar-brand" href="{{ url_for('index') }}">{{ brand or 'Your Brand' }}</a>
+            {% endif %}
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,9 +39,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if active_page == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_page == 'upload' %}active{% endif %}" href="{{ url_for('upload') }}">Upload</a>
                     </li>
                 </ul>
                 

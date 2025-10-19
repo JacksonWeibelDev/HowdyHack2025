@@ -5,12 +5,15 @@ html, body {
 body {
   margin: 0;
   color: #eee;
-  background-color: #0b0010; /* fallback */
-  background-image: radial-gradient(circle at 50% 20%, rgba(68, 1, 120, 0.505) 50%, rgba(0,0,0,0.95) 100%);
+  background-color: #020006; /* fallback deep black */
+  /* Top-focused linear gradient that fades to black, plus a subtle radial accent at the top for depth */
+  background-image:
+    linear-gradient(to bottom, rgba(152,62,221,0.88) 0%, rgba(106,8,180,0.7) 28%, rgba(34,6,100,0.35) 55%, rgba(0,0,0,1) 100%),
+    radial-gradient(circle at 50% 6%, rgba(180,120,255,0.18) 0%, rgba(120,60,200,0.10) 30%, transparent 55%);
   min-height: 100vh;
   background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
+  background-position: top center, top center;
+  background-size: cover, 60% 40%;
 }
 
 /* Navbar contrast */
@@ -29,9 +32,16 @@ main .container {
   backdrop-filter: blur(4px);
 }
 .card {
-    background-color: #2e2e2e9d;
-    color: white;   
-    background-
+  background-color: rgba(46,46,46,0.62);
+  color: #fff;
+}
+
+/* Navbar brand image sizing */
+.navbar-brand-img {
+  width: 36px;
+  height: auto;
+  border-radius: 6px;
+  object-fit: contain;
 }
 
 /* Form controls on light card */
@@ -47,16 +57,24 @@ footer {
 /* Spacer utility */
 .spacer-2000 { height: 2000px }
 
-/* Reveal-on-scroll helper */
-.reveal {
+/* Reveal-on-scroll helper - use class "reveal-card" on any element */
+.reveal-card {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 600ms ease, transform 600ms ease;
+  transform: translateY(40px);
+  /* Smooth fade and upward slide */
+  transition: opacity 1000ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 1000ms cubic-bezier(0.34, 1.56, 0.64, 1);
   will-change: opacity, transform;
 }
-.reveal.visible {
+.reveal-card.reveal-active {
   opacity: 1;
-  transform: none;
+  transform: translateY(0);
+}
+
+/* Slower reveal for cards that need scrolling to see */
+.card.reveal-card {
+  transition: opacity 1600ms cubic-bezier(0.16, 0.84, 0.44, 1),
+              transform 1600ms cubic-bezier(0.34, 1.35, 0.64, 1);
 }
 
 /* Ensure two-column cards share equal width on md+ screens */
@@ -94,4 +112,24 @@ footer {
 .card-glow:hover::before {
   filter: blur(18px);
   opacity: 1;
+}
+
+/* Hero section */
+.hero-section {
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+.hero-logo {
+  width: 120px;
+  height: auto;
+  filter: drop-shadow(0 6px 18px rgba(75,0,130,0.35));
+}
+/* Improve contrast for muted text inside the hero */
+.hero-section .text-muted {
+  color: rgba(255,255,255,0.78) !important;
+}
+
+/* spacer below hero */
+.hero-spacer {
+  height: 20rem; /* default */
 }

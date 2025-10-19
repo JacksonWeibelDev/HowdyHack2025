@@ -3,13 +3,24 @@
 {% block title %}Resume Classifier{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<!-- Hero section (drop your hero.png into static/) -->
+<section class="hero-section text-center py-5">
+  <div class="container reveal-card">
+    <img src="{{ url_for('static', filename='hero.png') }}" alt="Hero logo" class="hero-logo mb-3" onerror="this.style.display='none'">
+    <h1 class="display-5 fw-bold text-light">Ruzi: Smarter Resume Evaluation</h1>
+    <p class="lead text-muted">Upload your resume and job description — let AI show how well they match.</p>
+  </div>
+</section>
+
+<div class="hero-spacer" aria-hidden="true"></div>
+
+<div class="container py-5 mt-5">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10">
       <form id="classify-form" novalidate>
         <div class="d-flex flex-column flex-md-row gap-3">
           <!-- Left column card: job role -->
-          <div class="card card-glow flex-fill shadow-sm reveal" data-reveal>
+          <div class="card card-glow flex-fill shadow-sm reveal-card">
             <div class="card-body">
               <h2 class="h5 mb-3">Job Role</h2>
               <div class="mb-3">
@@ -25,7 +36,7 @@
           </div>
 
           <!-- Right column card: resume text + submit + results -->
-          <div class="card card-glow flex-fill shadow-sm reveal" data-reveal>
+          <div class="card card-glow flex-fill shadow-sm reveal-card">
             <div class="card-body">
               <h2 class="h5 mb-3">Resume Text</h2>
               <div class="mb-3">
@@ -85,19 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<script>
-// Reveal-on-scroll using IntersectionObserver
-document.addEventListener('DOMContentLoaded', () => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
-});
-</script>
+<!-- Reveal animation script -->
+<script src="{{ url_for('static', filename='reveal.js') }}"></script>
 {% endblock %}
