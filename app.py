@@ -47,7 +47,7 @@ def inject_global_vars():
 # --- Routes ---
 @app.route('/')
 def index():
-    return render_template('index.html', active_page='home')
+    return render_template('upload.html', active_page='home')
 
 @app.route('/about')
 def about():
