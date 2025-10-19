@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Form submit handler ---
   const form = document.getElementById("classify-form");
   const resultContainer = document.getElementById("result-container");
+  const resultPlaceholder = document.getElementById("result-placeholder");
   const resultJson = document.getElementById("result-json");
 
   if (form) {
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
           resultJson.style.color = (result.prediction === 'Select') ? '#27ae60' : '#c0392b';
         }
         if (resultContainer) resultContainer.classList.remove('d-none');
+        if (resultPlaceholder) resultPlaceholder.classList.add('d-none');
 
       } catch (error) {
         if (resultJson) {
@@ -36,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
           resultJson.style.color = '#c0392b';
         }
         if (resultContainer) resultContainer.classList.remove('d-none');
+        if (resultPlaceholder) resultPlaceholder.classList.add('d-none');
       }
     });
   }

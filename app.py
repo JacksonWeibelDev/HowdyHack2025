@@ -97,7 +97,7 @@ def inject_global_vars():
     try:
         hero_path = os.path.join(app.root_path, 'static', 'hero.png')
         if os.path.exists(hero_path):
-            brand_img = url_for('static', filename='hero.png')
+            brand_img = url_for('static', filename='hero_white.png')
         else:
             brand_img = None
     except Exception:
