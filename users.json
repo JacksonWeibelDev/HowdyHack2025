@@ -3,12 +3,114 @@
         "1": {
             "email": "admin@example.com",
             "password_hash": "password",
-            "name": "Admin User"
+            "name": "Admin User",
+            "history": [
+                {
+                    "timestamp": "2025-10-19 01:36:59",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "a...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "88.47%",
+                    "gen_ai_assessment": "This candidate appears to be a Poor match. The resume is empty and provides no information about skills, experience, or qualifications relevant to a Software Engineer role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "*   **Quantify Project Impact:** Instead of just listing projects, add metrics to showcase your impact. For example, \"Developed a new feature that reduced API response time by 20%\" or \"Implemented an automated testing suite that increased test coverage by 35%.\"\n*   **Highlight Specific Technologies & Methodologies:** Explicitly list the programming languages, frameworks, databases, and methodologies (e.g., Agile, Scrum) relevant to software engineering roles that you have experience with. If you've used specific tools like Git, Docker, or Kubernetes, ensure they are prominent.\n*   **Tailor Experience Descriptions:** Rephrase bullet points to emphasize the software engineering aspects of your work. For instance, if you worked on a data analysis project, focus on the coding, algorithm development, and software tools used rather than just the analytical outcomes."
+                },
+                {
+                    "timestamp": "2025-10-19 01:37:00",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "a...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "88.47%",
+                    "gen_ai_assessment": "This candidate appears to be a Poor match. The resume is blank and provides no information about their skills or experience.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "*   **Quantify project impact:** Instead of stating \"Developed a new feature,\" rephrase to highlight the impact. For example, \"Developed a new user authentication feature, resulting in a 15% reduction in login errors and a 10% increase in user engagement.\"\n*   **Tailor the \"Skills\" section:** Group technical skills under clear headings relevant to software engineering, such as \"Programming Languages,\" \"Frameworks & Libraries,\" and \"Tools & Technologies.\" Prioritize skills mentioned in the job description.\n*   **Highlight relevant keywords:** Ensure keywords from the job description, such as specific programming languages (e.g., Python, Java), frameworks (e.g., React, Spring), cloud platforms (e.g., AWS, Azure), and methodologies (e.g., Agile, CI/CD), are integrated naturally within your project descriptions and skills section."
+                },
+                {
+                    "timestamp": "2025-10-19 01:39:15",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "Brandon Hoang\n346-667-7730 | hieueyh@outlook.com \nPROFESSIONAL SUMMARY\nAspiring cybersecurity professional pursuing a degree in Computer Science, with a passion for game\ndevelopment and experience in ...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "28.15%",
+                    "gen_ai_assessment": "This candidate appears to be a Good match.\nThe candidate demonstrates relevant technical skills and project experience in web development, which aligns with software engineering roles, despite their stated interest in cybersecurity.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "Here are 2-3 specific, actionable suggestions for Brandon's resume to better match a Software Engineer role:\n\n*   **Quantify Project Impact and Technical Contributions:** For both the \"AggieLoL\" and \"Ruzi\" projects, add specific metrics or outcomes. For example, instead of \"Collaborated on a web application,\" consider \"Developed a web application that successfully displays player rosters, profiles, and leaderboards for TAMU LoL teams,\" or for Ruzi, \"Implemented a resume analysis feature using Gemini 2.5 API, achieving X% accuracy in resume scoring\" (if measurable). Also, explicitly state which features were *your* primary responsibility to highlight your individual contributions.\n\n*   **Tailor Technical Skills to Software Engineering:** While the current list is good, consider reordering or rephrasing to emphasize core software engineering competencies. For instance, move \"Languages\" like Python, JavaScript, and Java to the top. Under \"Frameworks/Tools,\" highlight backend frameworks (like Flask) and deployment/cloud tools (like AWS) more prominently, as these are critical for many software engineering roles. Clarify the specific functionalities or areas you used tools like Git, PyCharm, and Eclipse in the context of software development.\n\n*   **Reframe Professional Summary and Experience:** The current summary leans heavily towards cybersecurity. For a Software Engineer role, adjust the summary to highlight your passion and experience in building software, specifically mentioning your interest in full-stack development or the types of applications you've worked on (web applications, game development tools). The \"Database Technician\" role, while showing responsibility, doesn't directly demonstrate software engineering skills. If possible, rephrase the bullet points to highlight any data management, scripting, or problem-solving aspects that are transferable to software engineering."
+                },
+                {
+                    "timestamp": "2025-10-19 01:39:19",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "Brandon Hoang\n346-667-7730 | hieueyh@outlook.com \nPROFESSIONAL SUMMARY\nAspiring cybersecurity professional pursuing a degree in Computer Science, with a passion for game\ndevelopment and experience in ...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "28.15%",
+                    "gen_ai_assessment": "This candidate appears to be a Good match.\nTheir projects showcase practical application of relevant technologies like JavaScript, SQL, Flask, and React, demonstrating a solid foundation for a Software Engineer role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "Here are 2-3 actionable suggestions to improve Brandon's resume for a Software Engineer role:\n\n*   **Quantify Project Achievements:** For both \"AggieLoL\" and \"Ruzi,\" try to add metrics to showcase impact. For example, instead of \"Collaborated on a web application,\" consider something like \"Developed and deployed a web application used by X users/teams to manage LoL team information.\" For \"Ruzi,\" if possible, quantify the accuracy or efficiency of the resume judging feature.\n\n*   **Tailor Professional Summary:** The current summary is geared towards cybersecurity and game development. For a general Software Engineer role, shift the focus to core software engineering skills and aspirations. For example: \"Aspiring Software Engineer with a strong foundation in [mention key languages like Python, JavaScript, Java] and experience developing full-stack web applications. Eager to apply problem-solving skills and passion for [mention a relevant area like efficient coding, scalable systems, or data structures] to contribute to innovative software solutions.\"\n\n*   **Incorporate Keywords into Experience/Projects:** Review typical Software Engineer job descriptions and strategically weave relevant keywords into the project descriptions and potentially even the work experience, if applicable. For instance, under \"AggieLoL,\" consider adding phrases like \"built RESTful APIs,\" \"implemented responsive design,\" or \"managed data persistence.\" For the \"Database Technician\" role, if there was any scripting or automation involved, highlight that as it's relevant to software engineering."
+                },
+                {
+                    "timestamp": "2025-10-19 01:42:08",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "Brandon Hoang\n346-667-7730 | hieueyh@outlook.com \nPROFESSIONAL SUMMARY\nAspiring cybersecurity professional pursuing a degree in Computer Science, with a passion for game\ndevelopment and experience in ...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "28.15%",
+                    "gen_ai_assessment": "This candidate appears to be a Good match.\nTheir project experience demonstrates relevant technical skills in web development and API integration, which are valuable for a Software Engineer role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "Here are 2-3 specific, actionable suggestions to improve the resume for a Software Engineer role:\n\n*   **Quantify Project Impact and Technical Contributions:** For \"AggieLoL\" and \"Ruzi,\" add metrics to showcase the scale and impact of your work. For example, instead of \"Collaborated on a web application,\" consider \"Developed a web application for TAMU LoL teams, enabling X number of users to access roster, profile, and schedule information.\" For \"Ruzi,\" quantify the resume analysis, such as \"Implemented a machine learning model using Gemini 2.5 API to analyze resumes, providing insights on X key attributes.\"\n\n*   **Refine Professional Summary for Software Engineering:** The current summary leans heavily towards cybersecurity and game development. Tailor it to emphasize core software engineering principles. Consider something like: \"Aspiring Software Engineer with a strong foundation in Computer Science and demonstrated experience in full-stack web development and data analysis. Seeking to leverage skills in Python, JavaScript, and cloud technologies to contribute to innovative software solutions.\"\n\n*   **Expand on Technical Skills and Relevance:** While the \"Technical Skills\" section is good, explicitly link your experience to software engineering tasks. For example, under \"Languages,\" you could add brief context: \"Python (data analysis, web development), JavaScript (front-end development).\" For \"Frameworks / Tools,\" if you used Git for version control in your projects, highlight that specifically: \"Git (version control for collaborative development).\" If your \"Database Technician\" role involved SQL querying beyond backups, consider mentioning that under relevant skills or as a bullet point in that experience."
+                },
+                {
+                    "timestamp": "2025-10-19 01:43:24",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "Brandon Hoang\n346-667-7730 | hieueyh@outlook.com \nPROFESSIONAL SUMMARY\nAspiring cybersecurity professional pursuing a degree in Computer Science, with a passion for game\ndevelopment and experience in ...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "90.82%",
+                    "gen_ai_assessment": "This candidate appears to be a Weak match. While the candidate possesses relevant technical skills and projects, their primary focus and stated aspirations are in cybersecurity and game development, not general software engineering.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "Here are 2-3 specific, actionable suggestions to improve Brandon's resume for a Software Engineer role:\n\n*   **Quantify Project Impact and Technical Depth:** For both \"AggieLoL\" and \"Ruzi,\" quantify the impact of the features developed. Instead of \"Includes features for viewing player rosters, profiles, leaderboards, schedules, lifestreams,\" consider something like \"Developed a feature to efficiently display player rosters, improving data accessibility for X users.\" For \"Ruzi,\" specify the accuracy or efficiency gains from the ML resume analysis. Also, clearly list the *specific* Python libraries used in each project (e.g., \"Implemented resume parsing using Python libraries such as `pandas` and `scikit-learn`\").\n\n*   **Reframe \"Professional Summary\" and Highlight Core Software Engineering Skills:** The current summary focuses heavily on aspirations in cybersecurity and game design. For a general Software Engineer role, rephrase it to emphasize core software development competencies. For example: \"Aspiring Software Engineer with a strong foundation in Computer Science, demonstrating proficiency in full-stack web development (React, Flask, Firebase) and data manipulation (SQL, SQLAlchemy). Eager to apply problem-solving skills and collaborative experience to develop innovative software solutions.\"\n\n*   **Integrate \"Technical Skills\" Keywords into Project Descriptions:** Ensure that the \"Technical Skills\" section is reflected and demonstrated within the \"Projects\" section. For example, when mentioning \"AggieLoL,\" explicitly state \"Utilized React for the front-end UI, Tailwind CSS for styling, and Firebase for backend data storage and authentication.\" Similarly, for \"Ruzi,\" mention \"Leveraged Flask for the backend API and SQLAlchemy for database interactions,\" to directly showcase practical application of these skills."
+                },
+                {
+                    "timestamp": "2025-10-19 01:43:29",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "Brandon Hoang\n346-667-7730 | hieueyh@outlook.com \nPROFESSIONAL SUMMARY\nAspiring cybersecurity professional pursuing a degree in Computer Science, with a passion for game\ndevelopment and experience in ...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "28.15%",
+                    "gen_ai_assessment": "This candidate appears to be a Good match.\nThe candidate demonstrates relevant technical skills and project experience in web development and the application of machine learning, indicating a solid foundation for a software engineering role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "Here are 2-3 specific, actionable suggestions to improve Brandon Hoang's resume for a Software Engineer role:\n\n*   **Quantify Project Achievements:** For both \"AggieLoL\" and \"Ruzi,\" aim to add quantifiable results. For example, instead of \"Includes features for viewing player rosters, profiles, leaderboards, schedules, lifestreams,\" consider something like \"Implemented features for viewing player rosters, profiles, leaderboards, schedules, and lifestreams, improving information accessibility by X%.\" For Ruzi, you could mention the accuracy of the resume judgment or the number of resumes processed. This demonstrates the impact of your work.\n\n*   **Elaborate on Software Engineering Contributions:** While the projects are listed, the descriptions could more explicitly highlight software engineering principles and techniques. For \"AggieLoL,\" instead of just listing features, briefly mention the design patterns used, the data structures that enabled efficient roster management, or how the Firebase integration facilitated real-time updates. For \"Ruzi,\" detail the API integration process, the algorithm behind the resume judgment, and how you optimized performance.\n\n*   **Tailor Technical Skills Keywords:** The current \"Technical Skills\" section is good, but to align more directly with a Software Engineer role, consider rephrasing and potentially adding more specific keywords. For instance, under \"Frameworks/Tools,\" explicitly mention \"Web Development Frameworks\" and list Flask and React there. You could also add a \"Databases\" category and list SQL and Firebase. Given the project experience, you might also consider adding \"API Development/Integration\" or \"Full-Stack Development\" if applicable and demonstrable through your projects."
+                },
+                {
+                    "timestamp": "2025-10-19 01:44:25",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "test...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "88.43%",
+                    "gen_ai_assessment": "This candidate appears to be a Poor match. The resume contains no relevant information or skills that can be assessed for the Software Engineer role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "*   **Quantify Impact:** Instead of \"Developed new features,\" specify the impact, e.g., \"Developed new features that increased user engagement by X%,\" or \"Optimized database queries, reducing response times by Y seconds.\"\n*   **Highlight Relevant Technologies:** Explicitly list programming languages, frameworks, databases, cloud platforms, and CI/CD tools used in projects. For example, instead of \"Worked on a web application,\" say \"Developed a full-stack web application using React, Node.js, and PostgreSQL.\"\n*   **Tailor Project Descriptions:** For each project, briefly explain the problem solved, your specific contribution, and the technologies used. Emphasize projects that involved software development methodologies, collaborative coding, or problem-solving relevant to a software engineering role."
+                },
+                {
+                    "timestamp": "2025-10-19 01:45:14",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "test...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "88.43%",
+                    "gen_ai_assessment": "This candidate appears to be a Weak match. The provided resume text is \"test\" and lacks any relevant information to assess their qualifications.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "*   **Quantify Project Impact:** Instead of stating \"Developed a new feature,\" specify the impact. For example, \"Developed a new user authentication feature, reducing login errors by 15%,\" or \"Optimized database queries, leading to a 20% improvement in application response time.\"\n*   **Emphasize Key Technologies in a Dedicated Skills Section:** Create a prominent \"Skills\" section that clearly lists programming languages (e.g., Python, Java, C++), frameworks (e.g., React, Spring Boot, Django), databases (e.g., SQL, PostgreSQL, MongoDB), and tools (e.g., Git, Docker, AWS). Tailor this list to the specific requirements of the Software Engineer job description.\n*   **Highlight Problem-Solving and Collaboration:** For each project or experience, briefly describe a technical challenge faced and how it was overcome, or how collaboration with team members led to a successful outcome. For example, \"Collaborated with UI/UX team to implement a responsive design, improving user engagement by 10%.\""
+                }
+            ]
         },
         "2": {
             "email": "weibel.jackson@gmail.com",
             "password": "BigTest",
-            "name": "Jackson Weibel"
+            "name": "Jackson Weibel",
+            "history": []
         }
     },
     "next_user_id": 3

@@ -206,6 +206,46 @@ footer {
   padding-right: 0.5rem !important;
   max-width: 100%;
 }
+
+/* Results styling */
+.result-card {
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.96) 100%);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Badge colors for Select / Reject */
+.badge-select {
+  background: linear-gradient(90deg,#27ae60,#2ecc71);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 14px;
+  font-weight: 600;
+}
+.badge-reject {
+  background: linear-gradient(90deg,#e74c3c,#c0392b);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+/* Typewriter effect container: caret simulated with pseudo-element */
+.typewriter {
+  position: relative;
+}
+.typewriter::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  width: 2px;
+  height: 1.2em;
+  background: #000;
+  top: 10px;
+  animation: blink 1s steps(2, start) infinite;
+}
+@keyframes blink {
+  to { visibility: hidden; }
+}
 /* ...existing code... */
 
 .scroll-down {
