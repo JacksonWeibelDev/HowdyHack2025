@@ -5,7 +5,7 @@
 {% block content %}
 <!-- Hero section (drop your hero.png into static/) -->
 <section class="hero-section text-center py-5">
-  <div class="container">
+  <div class="container reveal.slow">
     <img src="{{ url_for('static', filename='hero.png') }}" alt="Hero logo" class="hero-logo mb-3" onerror="this.style.display='none'">
     <h1 class="display-5 fw-bold text-light">Ruzi: Smarter Resume Evaluation</h1>
     <p class="lead text-muted">Upload your resume and job description — let AI show how well they match.</p>
@@ -14,7 +14,7 @@
 
 <div class="hero-spacer" aria-hidden="true"></div>
 
-<div class="container py-5 mt-5">
+<div class="container py-5 mb-5 reveal">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10">
       <form id="classify-form" novalidate>
@@ -60,67 +60,5 @@
   </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("classify-form");
-  const resultContainer = document.getElementById("result-container");
-  const resultJson = document.getElementById("result-json");
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-  const jobRole = document.getElementById("job-role").value;
-  const jobDescription = document.getElementById("job-description").value;
-  const resumeText = document.getElementById("resume-text").value;
-
-  const payload = { job_role: jobRole, job_description: jobDescription, resume_text: resumeText };
-
-    try {
-      const response = await fetch('/classify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      const result = await response.json();
-      resultJson.textContent = JSON.stringify(result, null, 2);
-      resultJson.style.color = (result.prediction === 'Select') ? '#27ae60' : '#c0392b';
-      resultContainer.classList.remove('d-none');
-
-    } catch (error) {
-      resultJson.textContent = JSON.stringify({ error: "Could not connect to server. Is app.py running?" }, null, 2);
-      resultJson.style.color = '#c0392b';
-      resultContainer.classList.remove('d-none');
-    }
-  });
-});
-</script>
-
-<script>
-// Reveal-on-scroll using IntersectionObserver
-document.addEventListener('DOMContentLoaded', () => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        // read optional per-element delay (ms) or use default
-        const configured = entry.target.dataset.revealDelay;
-        const baseDelay = configured ? parseInt(configured, 10) : 100;
-        // Add a tiny stagger based on vertical position to make multiple items feel natural
-        const rect = entry.target.getBoundingClientRect();
-        const stagger = Math.min(Math.max(Math.round(rect.top / 100), 0), 6) * 30;
-        setTimeout(() => {
-          entry.target.classList.add('visible');
-        }, baseDelay + stagger);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.35 });
-
-  document.querySelectorAll('[data-reveal]').forEach((el, idx) => {
-    // If author hasn't set a data-reveal-delay, expose a small auto-stagger
-    if (!el.hasAttribute('data-reveal-delay')) el.dataset.revealDelay = 90 + (idx * 25);
-    observer.observe(el);
-  });
-});
-</script>
+<script src="{{ url_for('static', filename='upload.js') }}"></script>
 {% endblock %}
