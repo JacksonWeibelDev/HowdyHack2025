@@ -1,5 +1,6 @@
 import os
 import json
+import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from predict import classify_resume, MODEL_DIR
 
@@ -20,66 +21,64 @@ login_manager.login_message_category = 'info' # Category for the "Please log in"
 # --- File path for user data ---
 USER_DATA_FILE = 'users.json'
 
-# --- User Class ---
-class User(UserMixin):
-    def __init__(self, id, email, name):
-        self.id = id
-        self.email = email
-        self.name = name
-    # We don't store the password hash on the User object itself usually
 
-# --- User Data Loading/Saving Functions ---
+# --- User Data Loading/Saving Functions (unchanged) ---
 def load_users():
-    """Loads user data from the JSON file. Creates the file with a default admin if it doesn't exist."""
-    default_users = {'1': {'email': 'admin@example.com', 'password_hash': 'password', 'name': 'Admin User'}}
+    # ...(logic remains the same)...
+    default_users = {'1': {'email': 'admin@example.com', 'password_hash': 'password', 'name': 'Admin User', 'history': [] }}
     default_next_id = 2
-
     if not os.path.exists(USER_DATA_FILE):
-        print(f"'{USER_DATA_FILE}' not found. Creating it with default admin user.")
+        print(f"'{USER_DATA_FILE}' not found. Creating it...")
         try:
-            # --- NEW: Save the default data immediately ---
             save_users(default_users, default_next_id)
             print(f"Successfully created '{USER_DATA_FILE}'.")
             return default_users, default_next_id
         except Exception as e:
-            print(f"Error creating '{USER_DATA_FILE}': {e}. Using in-memory default.")
-            return default_users, default_next_id # Fallback to in-memory
-
-    # --- Existing logic to load if file DOES exist ---
+            print(f"Error creating '{USER_DATA_FILE}': {e}.")
+            return default_users, default_next_id
     try:
         with open(USER_DATA_FILE, 'r') as f:
             data = json.load(f)
             users_dict = data.get('users', {})
-            # Ensure next_user_id logic is robust
+            for user_id in users_dict:
+                if 'history' not in users_dict[user_id]:
+                    users_dict[user_id]['history'] = []
             max_id = 0
             if users_dict:
                  numeric_ids = [int(k) for k in users_dict.keys() if k.isdigit()]
-                 if numeric_ids:
-                      max_id = max(numeric_ids)
+                 if numeric_ids: max_id = max(numeric_ids)
             next_id = data.get('next_user_id', max_id + 1)
-            # Handle case where loaded file might be empty but exists
             if not users_dict:
-                 print(f"'{USER_DATA_FILE}' was empty. Initializing with default admin.")
+                 print(f"'{USER_DATA_FILE}' was empty. Initializing...")
                  save_users(default_users, default_next_id)
                  return default_users, default_next_id
             return users_dict, next_id
     except (json.JSONDecodeError, IOError) as e:
-        print(f"Error loading user data from existing file: {e}. Using in-memory default.")
-        return default_users, default_next_id # Fallback
+        print(f"Error loading user data: {e}.")
+        return default_users, default_next_id
 
 def save_users(users_dict, next_id):
-    """Saves user data to the JSON file."""
-    try:
+    # ...(logic remains the same)...
+     try:
         with open(USER_DATA_FILE, 'w') as f:
             json.dump({'users': users_dict, 'next_user_id': next_id}, f, indent=4)
-    except IOError as e:
+     except IOError as e:
         print(f"Error saving user data: {e}")
 
 users, next_user_id = load_users()
+print(f"Loaded {len(users)} users. Next ID: {next_user_id}")
 
-# --- User Loader Function (unchanged) ---
+# --- User Class & Loader (unchanged) ---
+class User(UserMixin):
+    # ...(unchanged)...
+     def __init__(self, id, email, name):
+        self.id = id
+        self.email = email
+        self.name = name
+
 @login_manager.user_loader
 def load_user(user_id):
+    # ...(unchanged)...
     user_data = users.get(user_id)
     if user_data:
         return User(id=user_id, email=user_data['email'], name=user_data['name'])
@@ -204,48 +203,62 @@ def logout():
 @app.route('/history')
 @login_required
 def history():
-    return render_template('history.html')
+    # ...(logic remains the same)...
+    user_id = current_user.get_id()
+    user_data = users.get(user_id)
+    user_history = user_data.get('history', []) if user_data else []
+    return render_template('history.html', history=user_history, active_page='history')
 
 
 @app.route('/testing', methods=['GET'])
 @login_required # Example: Protect the testing page
 def upload():
     # Now only logged-in users can see this
-    return render_template('upload.html')
+    return render_template('upload.html', active_page='testing')
 
-
-# --- Protect the /classify endpoint ---
+# --- MODIFIED /classify Route ---
 @app.route('/classify', methods=['POST'])
-@login_required # Add this decorator
+@login_required
 def classify_resume_route():
-    """
-    This is the main API endpoint. It expects a JSON payload with
-    'resume_text' and 'job_role' (which is the name of the job).
-    Now requires the user to be logged in.
-    """
     data = request.get_json()
-
-    if not data:
-        return jsonify({"error": "No JSON data provided"}), 400
+    if not data: return jsonify({"error": "No JSON data provided"}), 400
 
     resume_text = data.get('resume_text')
     job_role = data.get('job_role')
+    job_description = data.get('job_description') # --- NEW: Get job description ---
 
+    # Basic validation
     if not resume_text or not job_role:
-        return jsonify({"error": "Missing 'resume_text' or 'job_role' in JSON"}), 400
+        return jsonify({"error": "Missing 'resume_text' or 'job_role'"}), 400
 
-    # Call our imported prediction function
-    result = classify_resume(resume_text, job_role)
+    # Call prediction function, passing job_description
+    result = classify_resume(resume_text, job_role, job_description) # --- MODIFIED CALL ---
 
-    if "error" in result:
-         # Distinguish between model not found and other errors if needed
-        if "No ML model found" in result.get("error", ""):
-            return jsonify(result), 404 # 404 Not Found (no model for that role)
+    # Save result to user history (including new fields)
+    if "error" not in result.get("error", ""): # Check more robustly for errors
+        user_id = current_user.get_id()
+        if user_id in users:
+            history_entry = {
+                'timestamp': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                'job_role': job_role,
+                'job_description_snippet': (job_description[:150] + "...") if job_description else "N/A", # --- NEW ---
+                'resume_snippet': resume_text[:200] + "...",
+                'ml_prediction': result.get('ml_prediction'),
+                'ml_confidence': result.get('ml_confidence'),
+                'gen_ai_assessment': result.get('gen_ai_assessment'),
+                'resume_jd_comparison': result.get('resume_jd_comparison'), # --- NEW ---
+                'improvement_suggestions': result.get('improvement_suggestions')
+            }
+            if 'history' not in users[user_id]: users[user_id]['history'] = []
+            users[user_id]['history'].append(history_entry)
+            save_users(users, next_user_id)
         else:
-            return jsonify(result), 500 # Internal Server Error for other issues
+            print(f"Warning: Could not find user {user_id} to save history.")
 
-    
-
+    # Return result
+    if "error" in result.get("error", ""): # Check more robustly for errors
+        status_code = 404 if "No ML model found" in result.get("error", "") else 500
+        return jsonify(result), status_code
     return jsonify(result), 200
 
 

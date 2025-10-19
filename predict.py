@@ -8,29 +8,23 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from scipy.sparse import hstack
 
-# Optional: load environment variables from a local .env during development
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except Exception:
-    # python-dotenv is optional; we'll fall back to system environment variables
-    pass
-
 # --- 1. Initialize Clients ---
 MODEL_DIR = "saved_models"
 
 # Initialize Google Gemini client (using API_KEY environment variable)
-api_key = os.environ.get("API_KEY")
-if not api_key:
-    print("Error: API_KEY environment variable not found. To set it for development, create a .env file with API_KEY=your_key or set the environment variable.")
-    client = None
-else:
-    try:
-        client = genai.Client(api_key=api_key)
-        print("Google Gemini client initialized.")
-    except Exception as e:
-        print(f"Error initializing Google Gemini client: {e}")
+try:
+    api_key = os.environ.get("API_KEY")
+    if not api_key:
+        print("Error: API_KEY environment variable not found.")
         client = None
+    else:
+        
+        client = genai.Client(api_key=api_key)
+
+        print("Google Gemini client initialized.")
+except Exception as e:
+    print(f"Error initializing Google Gemini client: {e}")
+    gemini_model = None
 
 # --- 2. Define Constants and Helpers ---
 CUSTOM_STOP_WORDS = set([
@@ -98,110 +92,146 @@ def get_gen_ai_assessment(resume_text, job_role):
         except:
            pass
         return {"gen_ai_assessment": f"Error calling Google Gemini API: {e}. Feedback: {error_details}", "gen_ai_sentiment": "Error"}
+# --- 4. (NEW) Gen AI Resume-JD Comparison Function ---
+def get_resume_jd_comparison(resume_text, job_description, job_role):
+    if not job_description or not job_description.strip():
+         return {"resume_jd_comparison": "No job description provided for comparison."}
 
-# --- 4. Main Public Function ---
-def classify_resume(resume_text, job_role):
+    prompt = f"""
+    You are an expert HR analyst comparing a candidate's resume against a specific job description for the role of '{job_role}'.
+    Provide a concise paragraph (3-4 sentences) summarizing how well the resume aligns with the key requirements mentioned in the job description.
+    Highlight 1-2 key strengths and 1-2 potential gaps or areas lacking detail in the resume compared to the job description.
+
+    Resume Text:
+    ---
+    {resume_text}
+    ---
+
+    Job Description:
+    ---
+    {job_description}
+    ---
+
+    Provide only the comparison paragraph.
     """
-    Classifies a new resume using the ML model, GenAI assessment,
-    and pre-generated competitive analysis, adjusting confidence.
-    """
+    try:
+        response = client.models.generate_content(model="gemini-2.5-flash-lite",contents=prompt)
+        comparison = response.text
+        return {"resume_jd_comparison": comparison}
+    except Exception as e:
+        print(f"Error calling Google Gemini API (comparison): {e}")
+        error_details = ""
+        try: error_details = response.prompt_feedback
+        except: pass
+        return {"resume_jd_comparison": f"Error calling Google Gemini API: {e}. Feedback: {error_details}"}
+
+
+# --- 5. Gen AI Improvement Suggestions Function ---
+# (Keep get_resume_improvement_suggestions as before)
+def get_resume_improvement_suggestions(resume_text, job_role):
     
-    # --- Part 1: ML Model (Fast Classification) ---
+    prompt = f"""
+    You are an expert career coach reviewing a resume for the specific job role of '{job_role}'.
+    Analyze the provided resume and give 2-3 specific, actionable suggestions on how the candidate
+    could improve their resume *to better match this particular role*.
+    Focus on highlighting relevant skills, quantifying achievements, or adding specific keywords. Keep suggestions concise (bullet points or short paragraph).
+    Resume Text: --- {resume_text} ---
+    Provide only the improvement suggestions.
+    """
+    try:
+        response = client.models.generate_content(model="gemini-2.5-flash-lite",contents=prompt)
+        suggestions = response.text
+        return {"improvement_suggestions": suggestions}
+    except Exception as e:
+        print(f"Error calling Google Gemini API (suggestions): {e}")
+        error_details = ""
+        try: error_details = response.prompt_feedback
+        except: pass
+        return {"improvement_suggestions": f"Error: {e}. Feedback: {error_details}"}
+
+
+
+
+# --- 6. (MODIFIED) Main Public Function ---
+def classify_resume(resume_text, job_role, job_description=None): # Added job_description argument
+    """
+    Classifies a resume using ML, GenAI assessment, confidence adjustment,
+    JD comparison (if JD provided), and improvement suggestions.
+    """
+
+    # --- Part 1: ML Model ---
+    # (ML logic remains the same)
     print(f"Attempting to classify for role: '{job_role}'")
     role_lower = job_role.lower()
     safe_role_name = re.sub(r'[^a-z0-9_]+', '', role_lower.replace(' ', '_'))
     model_path = os.path.join(MODEL_DIR, f"{safe_role_name}_model.joblib")
     vectorizer_path = os.path.join(MODEL_DIR, f"{safe_role_name}_vectorizer.joblib")
-
     ml_result = {}
-    ml_prediction_label = "Error" # Initialize
-    ml_confidence_float = 0.0     # Initialize
-
+    ml_prediction_label = "Error"
+    ml_confidence_float = 0.0
     if not os.path.exists(model_path) or not os.path.exists(vectorizer_path):
-        ml_result = { "error": f"No ML model found for role '{job_role}'. (Checked for: {model_path})" }
+        ml_result = { "error": f"No ML model found for role '{job_role}'." }
     else:
         try:
             model = joblib.load(model_path)
             vectorizer = joblib.load(vectorizer_path)
-            
-            cleaned_resume = _clean_text_aggressively(resume_text, set()) 
+            cleaned_resume = _clean_text_aggressively(resume_text, set())
             portfolio = _has_portfolio_link(resume_text)
             honors = _has_honors_or_certs(resume_text)
-            engineered_features = np.array([[portfolio, honors]]) 
-            
+            engineered_features = np.array([[portfolio, honors]])
             tfidf_matrix = vectorizer.transform([cleaned_resume])
             features_combined = hstack([tfidf_matrix, engineered_features])
-            
             prediction = model.predict(features_combined)[0]
             probability = model.predict_proba(features_combined)[0]
-            
             ml_prediction_label = 'Select' if prediction == 1 else 'Reject'
-            ml_confidence_float = probability[prediction] * 100 # Store as float for adjustment
-
+            ml_confidence_float = probability[prediction] * 100
         except Exception as e:
             ml_result = {"error": f"ML model error: {e}"}
-            
-    # --- Part 2: Gen AI Model (Slow Reasoning) ---
+
+    # --- Part 2: Gen AI Assessment ---
     print("Getting Gen AI assessment using Gemini...")
-    gen_ai_result = get_gen_ai_assessment(resume_text, job_role) # Contains assessment text and sentiment
+    gen_ai_result = get_gen_ai_assessment(resume_text, job_role)
 
-    # --- Part 3: (NEW) Adjust Confidence (Dynamic Weighting) ---
+    # --- Part 3: Adjust Confidence ---
+    # (Confidence adjustment logic remains the same)
     adjusted_confidence_float = ml_confidence_float
-    
-    # --- Define Max/Min Adjustment ---
-    MAX_ADJUSTMENT = 40.0 # Max points to add/subtract (when ML confidence is 0)
-    MIN_ADJUSTMENT = 5.0  # Min points to add/subtract (when ML confidence is 100)
-    # --- End Define ---
-
+    MAX_ADJUSTMENT = 70.0
+    MIN_ADJUSTMENT = 5.0
     if "error" not in ml_result and gen_ai_result["gen_ai_sentiment"] != "Error" and gen_ai_result["gen_ai_sentiment"] != "Neutral":
         gen_ai_positive = gen_ai_result["gen_ai_sentiment"] == "Positive"
         ml_is_select = ml_prediction_label == "Select"
-
-        # --- Calculate Dynamic Adjustment ---
-        # Scale adjustment: Higher when ML confidence is lower
         adjustment_range = MAX_ADJUSTMENT - MIN_ADJUSTMENT
-        # How far is ML confidence from 100%? (Scaled 0 to 1)
-        confidence_diff_scale = (100.0 - ml_confidence_float) / 100.0 
+        confidence_diff_scale = (100.0 - ml_confidence_float) / 100.0
         dynamic_adjustment = MIN_ADJUSTMENT + (adjustment_range * confidence_diff_scale)
-        # --- End Calculate ---
-
-        if gen_ai_positive == ml_is_select: # They agree
+        if gen_ai_positive == ml_is_select:
             print(f"GenAI agrees with ML ({ml_prediction_label}). Boosting confidence by {dynamic_adjustment:.2f}.")
             adjusted_confidence_float = min(100.0, ml_confidence_float + dynamic_adjustment)
-        else: # They disagree
+        else:
             print(f"GenAI disagrees with ML ({ml_prediction_label}). Reducing confidence by {dynamic_adjustment:.2f}.")
             adjusted_confidence_float = max(0.0, ml_confidence_float - dynamic_adjustment)
     else:
-        print("Skipping confidence adjustment due to ML error or neutral/error GenAI sentiment.")
-
-    # Update ml_result with potentially adjusted confidence
+        print("Skipping confidence adjustment.")
     if "error" not in ml_result:
         ml_result = {
             "ml_prediction": ml_prediction_label,
-            # --- Use the adjusted confidence ---
-            "ml_confidence": f"{adjusted_confidence_float:.2f}%" 
+            "ml_confidence": f"{adjusted_confidence_float:.2f}%"
         }
 
-    # --- Part 4: Load Pre-Generated Analysis ---
-    print("Loading competitive analysis...")
-    analysis_path = os.path.join(MODEL_DIR, f"{safe_role_name}_analysis.txt")
-    analysis_result = {}
-    if os.path.exists(analysis_path):
-        try:
-            with open(analysis_path, 'r', encoding='utf-8') as f:
-                analysis_text = f.read()
-            analysis_result = {"competitive_analysis": analysis_text}
-        except Exception as e:
-            analysis_result = {"competitive_analysis": f"Error reading analysis file: {e}"}
-    else:
-        analysis_result = {"competitive_analysis": "No competitive analysis available for this role."}
+    # --- Part 4: (NEW) Get Resume-JD Comparison ---
+    print("Getting Resume-JD comparison using Gemini...")
+    jd_comparison_result = get_resume_jd_comparison(resume_text, job_description, job_role)
 
-    # --- Part 5: Combine All Results ---
+    # --- Part 5: Get Improvement Suggestions ---
+    print("Getting improvement suggestions using Gemini...")
+    improvement_result = get_resume_improvement_suggestions(resume_text, job_role)
+
+    # --- Part 6: Combine All Results ---
     final_result = {
         "role": job_role,
         **ml_result,
-        "gen_ai_assessment": gen_ai_result.get("gen_ai_assessment", "N/A"), # Keep only text
-        **analysis_result
+        "gen_ai_assessment": gen_ai_result.get("gen_ai_assessment", "N/A"),
+        **jd_comparison_result, # Add the comparison dictionary
+        **improvement_result
     }
-    
+
     return final_result

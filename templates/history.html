@@ -1,6 +1,66 @@
 {% extends "base.html" %}
 
-{% block title %}Resume Classifier{% endblock %}
+{% block title %}Classification History{% endblock %}
 
 {% block content %}
+<div class="container mt-4">
+    <h1>Classification History</h1>
+    <hr>
+
+    {% if history %}
+        <ul class="list-group">
+            {% for item in history | reverse %} {# Show newest first #}
+                <li class="list-group-item mb-3 p-3 shadow-sm">
+                    <h5 class="mb-1">Role: {{ item.job_role }}</h5>
+                    <small class="text-muted">Date: {{ item.timestamp }}</small>
+
+                    <div class="mt-2">
+                        <strong>ML Prediction:</strong>
+                        <span style="color: {{ '#27ae60' if item.ml_prediction == 'Select' else '#c0392b' }};">
+                            {{ item.ml_prediction }} ({{ item.ml_confidence }})
+                        </span>
+                    </div>
+
+                    {% if item.gen_ai_assessment and 'Error' not in item.gen_ai_assessment %}
+                    <div class="mt-2">
+                        <strong>AI Assessment:</strong>
+                        <p class="mb-0 fst-italic">"{{ item.gen_ai_assessment }}"</p>
+                    </div>
+                    {% endif %}
+
+                    {# --- NEW: Display Resume-JD Comparison --- #}
+                    {% if item.resume_jd_comparison and 'Error' not in item.resume_jd_comparison and 'No job description' not in item.resume_jd_comparison %}
+                    <div class="mt-2">
+                        <strong>Resume vs. Job Description Analysis:</strong>
+                        <p style="white-space: pre-wrap;">{{ item.resume_jd_comparison }}</p>
+                    </div>
+                    {% endif %}
+                    {# --- End New --- #}
+
+
+                    {% if item.improvement_suggestions and 'Error' not in item.improvement_suggestions %}
+                    <div class="mt-2">
+                        <strong>Improvement Suggestions:</strong>
+                        <p style="white-space: pre-wrap;">{{ item.improvement_suggestions }}</p>
+                    </div>
+                    {% endif %}
+
+                     <details class="mt-2">
+                        <summary><small>Input Snippets</small></summary>
+                        {# --- NEW: Display JD Snippet --- #}
+                        {% if item.job_description_snippet and item.job_description_snippet != 'N/A' %}
+                        <p class="mt-1 mb-0"><small><strong>Job Description:</strong> {{ item.job_description_snippet }}</small></p>
+                        {% endif %}
+                        {# --- End New --- #}
+                        <p class="mt-1 mb-0"><small><strong>Resume:</strong> {{ item.resume_snippet }}</small></p>
+                    </details>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't classified any resumes yet.</p>
+        <a href="{{ url_for('upload') }}" class="btn btn-primary">Classify a Resume</a>
+    {% endif %}
+
+</div>
 {% endblock %}
