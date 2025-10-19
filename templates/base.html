@@ -29,13 +29,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link {% if active_page == 'home' %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{{ url_for('about') }}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_page == 'services' %}active{% endif %}" href="{{ url_for('services') }}">Services</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if active_page == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">Contact</a>
@@ -53,10 +47,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
                          {# Points to the logout route we created #}
-                    </li>
-                     <li class="nav-item">
-                        <span class="navbar-text ms-2">Welcome, {{ current_user.name }}!</span>
-                         {# Optional: Display user's name #}
                     </li>
                 {% else %}
                     <li class="nav-item">

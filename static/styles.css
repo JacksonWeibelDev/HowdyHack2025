@@ -471,3 +471,97 @@ footer {
     padding: .45rem .9rem;
   }
 }
+
+/* Login page button: purple gradient + glow (matches classify button) */
+#login-form button[type="submit"],
+.btn-login {
+  color: #fff !important;
+  background-image: linear-gradient(135deg, #6e48f6 0%, #9b5bff 45%, #6a3bf0 100%) !important;
+  border: 0 !important;
+  border-radius: .6rem;
+  padding: .55rem 1rem;
+  font-weight: 600;
+  box-shadow:
+    0 12px 36px rgba(106,59,240,0.18),
+    0 0 28px rgba(106,59,240,0.06),
+    inset 0 -2px 8px rgba(0,0,0,0.06);
+  transition: transform 180ms cubic-bezier(.2,.9,.3,1), box-shadow 180ms ease, filter 180ms ease;
+}
+
+/* Hover / focus / active states */
+#login-form button[type="submit"]:hover,
+#login-form button[type="submit"]:focus,
+.btn-login:hover,
+.btn-login:focus {
+  transform: translateY(-3px);
+  box-shadow:
+    0 20px 56px rgba(106,59,240,0.26),
+    0 0 42px rgba(106,59,240,0.12),
+    inset 0 -2px 10px rgba(0,0,0,0.06);
+  outline: none;
+  filter: saturate(1.05);
+}
+#login-form button[type="submit"]:active,
+.btn-login:active {
+  transform: translateY(-1px) scale(.997);
+  box-shadow:
+    0 10px 28px rgba(106,59,240,0.20),
+    0 0 24px rgba(106,59,240,0.08),
+    inset 0 -2px 8px rgba(0,0,0,0.06);
+}
+
+/* Small screen adjustments */
+@media (max-width: 576px) {
+  #login-form button[type="submit"],
+  .btn-login {
+    min-width: 120px;
+    padding: .45rem .9rem;
+  }
+}
+
+/* Sign Up button: same purple gradient + glow as login/classify buttons */
+#signup-form button[type="submit"],
+.btn-signup {
+  color: #fff !important;
+  background-image: linear-gradient(135deg, #6e48f6 0%, #9b5bff 45%, #6a3bf0 100%) !important;
+  border: 0 !important;
+  border-radius: .6rem;
+  padding: .55rem 1rem;
+  font-weight: 600;
+  box-shadow:
+    0 12px 36px rgba(106,59,240,0.18),
+    0 0 28px rgba(106,59,240,0.06),
+    inset 0 -2px 8px rgba(0,0,0,0.06);
+  transition: transform 180ms cubic-bezier(.2,.9,.3,1), box-shadow 180ms ease, filter 180ms ease;
+}
+
+/* Hover / focus / active states */
+#signup-form button[type="submit"]:hover,
+#signup-form button[type="submit"]:focus,
+.btn-signup:hover,
+.btn-signup:focus {
+  transform: translateY(-3px);
+  box-shadow:
+    0 20px 56px rgba(106,59,240,0.26),
+    0 0 42px rgba(106,59,240,0.12),
+    inset 0 -2px 10px rgba(0,0,0,0.06);
+  outline: none;
+  filter: saturate(1.05);
+}
+#signup-form button[type="submit"]:active,
+.btn-signup:active {
+  transform: translateY(-1px) scale(.997);
+  box-shadow:
+    0 10px 28px rgba(106,59,240,0.20),
+    0 0 24px rgba(106,59,240,0.08),
+    inset 0 -2px 8px rgba(0,0,0,0.06);
+}
+
+/* Small screen adjustments */
+@media (max-width: 576px) {
+  #signup-form button[type="submit"],
+  .btn-signup {
+    min-width: 120px;
+    padding: .45rem .9rem;
+  }
+}
