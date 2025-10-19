@@ -16,41 +16,51 @@
 
 <div class="container py-5 mb-5 reveal">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-10">
+    <div class="col-12">
       <form id="classify-form" novalidate>
         <div class="d-flex flex-column flex-md-row gap-3">
-          <!-- Left column card: job role -->
-          <div class="card card-glow flex-fill shadow-sm reveal" data-reveal>
-            <div class="card-body">
-              <h2 class="h5 mb-3">Job Role</h2>
-              <div class="mb-3">
-                <label for="job-role" class="form-label">Job Role (e.g., "Sales", "Software Engineer")</label>
-                <input type="text" id="job-role" name="job_role" class="form-control" required>
+          <!-- Left column: Job Role + Classification Results stacked -->
+          <div class="d-flex flex-column gap-3 flex-fill">
+            <!-- Job Role Card -->
+            <div class="card card-glow shadow-sm reveal" data-reveal>
+              <div class="card-body">
+                <h2 class="h5 mb-3">Job Role</h2>
+                <div class="mb-3">
+                  <label for="job-role" class="form-label">Job Role (e.g., "Sales", "Software Engineer")</label>
+                  <input type="text" id="job-role" name="job_role" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label for="job-description" class="form-label">Job Description (optional)</label>
+                  <textarea id="job-description" name="job_description" class="form-control" rows="4" placeholder="Brief description of responsibilities or required skills"></textarea>
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="job-description" class="form-label">Job Description (optional)</label>
-                <textarea id="job-description" name="job_description" class="form-control" rows="4" placeholder="Brief description of responsibilities or required skills"></textarea>
+            </div>
+
+            <!-- Classification Results Card -->
+            <div class="card card-glow shadow-sm reveal" data-reveal>
+              <div class="card-body">
+                <h2 class="h5 mb-3">Classification Results</h2>
+                <div id="result-placeholder" class="text-muted">
+                  <p>Results will appear here after classification...</p>
+                </div>
+                <div id="result-container" class="d-none">
+                  <pre id="result-json" class="p-3 bg-light rounded"></pre>
+                </div>
               </div>
-              <p class="small text-muted">.</p>
             </div>
           </div>
 
-          <!-- Right column card: resume text + submit + results -->
-          <div class="card card-glow flex-fill shadow-sm reveal" data-reveal>
-            <div class="card-body">
+          <!-- Right column: Resume Text -->
+          <div class="card card-glow flex-fill shadow-sm reveal" data-reveal style="height: 100%;">
+            <div class="card-body d-flex flex-column">
               <h2 class="h5 mb-3">Resume Text</h2>
-              <div class="mb-3">
+              <div class="mb-3 flex-grow-1">
                 <label for="resume-text" class="form-label">Paste Full Resume Text</label>
                 <textarea id="resume-text" name="resume_text" class="form-control" rows="10" required></textarea>
               </div>
 
               <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">Classify Resume</button>
-              </div>
-
-              <div id="result-container" class="mt-4 d-none">
-                <h2 class="h5">Classification Result:</h2>
-                <pre id="result-json" class="p-3 bg-light rounded"></pre>
               </div>
             </div>
           </div>

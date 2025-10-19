@@ -169,8 +169,16 @@ footer {
 }
 
 /* Upload page layout: left column (Job Role + Results stacked), right column (Resume Text) */
-#classify-form > .d-flex.flex-md-row > .d-flex.flex-column {
-  height: 100%;
+@media (min-width: 768px) {
+  #classify-form > .d-flex.flex-md-row > .d-flex.flex-column,
+  #classify-form > .d-flex.flex-md-row > .card {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  #classify-form > .d-flex.flex-md-row > .d-flex.flex-column {
+    height: 100%;
+  }
 }
 
 /* Make stacked cards in left column equal height */
@@ -183,6 +191,7 @@ footer {
 #resume-text {
   min-height: 400px;
   resize: vertical;
+  height: 100%;
 }
 
 /* Ensure form spans full width */

@@ -8,23 +8,29 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from scipy.sparse import hstack
 
+# Optional: load environment variables from a local .env during development
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    # python-dotenv is optional; we'll fall back to system environment variables
+    pass
+
 # --- 1. Initialize Clients ---
 MODEL_DIR = "saved_models"
 
 # Initialize Google Gemini client (using API_KEY environment variable)
-try:
-    api_key = os.environ.get("API_KEY")
-    if not api_key:
-        print("Error: API_KEY environment variable not found.")
-        client = None
-    else:
-        
+api_key = os.environ.get("API_KEY")
+if not api_key:
+    print("Error: API_KEY environment variable not found. To set it for development, create a .env file with API_KEY=your_key or set the environment variable.")
+    client = None
+else:
+    try:
         client = genai.Client(api_key=api_key)
-
         print("Google Gemini client initialized.")
-except Exception as e:
-    print(f"Error initializing Google Gemini client: {e}")
-    gemini_model = None
+    except Exception as e:
+        print(f"Error initializing Google Gemini client: {e}")
+        client = None
 
 # --- 2. Define Constants and Helpers ---
 CUSTOM_STOP_WORDS = set([
