@@ -168,3 +168,33 @@ footer {
   transform: none;
 }
 
+/* Upload page layout: left column (Job Role + Results stacked), right column (Resume Text) */
+#classify-form > .d-flex.flex-md-row > .d-flex.flex-column {
+  height: 100%;
+}
+
+/* Make stacked cards in left column equal height */
+#classify-form .d-flex.flex-column > .card {
+  min-height: auto;
+  flex: 1 1 0;
+}
+
+/* Resume text textarea expands to fill space */
+#resume-text {
+  min-height: 400px;
+  resize: vertical;
+}
+
+/* Ensure form spans full width */
+#classify-form {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Tighten horizontal padding for full-width sections */
+.reveal.px-2 {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  max-width: 100%;
+}
+
