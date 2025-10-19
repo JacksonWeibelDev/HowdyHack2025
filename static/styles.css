@@ -206,4 +206,57 @@ footer {
   padding-right: 0.5rem !important;
   max-width: 100%;
 }
+/* ...existing code... */
 
+.scroll-down {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #ffffffcc;
+  text-decoration: none;
+  width: auto;
+  height: auto;
+  padding: 6px 8px;
+  /* keep link itself stable (no animation on the container) */
+  transition: color 200ms ease;
+}
+
+.scroll-text {
+  font-size: small;
+  text-align: center;
+  color: inherit;
+  /* ensure text does not participate in the arrow animation */
+  transform: none;
+  will-change: auto;
+}
+
+/* Animate only the SVG for smooth movement */
+.scroll-down svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  stroke: currentColor;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  animation: hh-bounce 1600ms cubic-bezier(.22,.9,.37,1) infinite;
+}
+
+.scroll-down:hover { color: #ffffff; }
+
+/* Smoother, softer bounce focused on the arrow only */
+@keyframes hh-bounce {
+  0%   { transform: translateY(0);    opacity: 0.98; }
+  30%  { transform: translateY(8px);   opacity: 1; }
+  55%  { transform: translateY(14px);  opacity: 1; }
+  80%  { transform: translateY(7px);   opacity: 1; }
+  100% { transform: translateY(0);    opacity: 0.98; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-down svg { animation: none; transform: none; }
+}
+
+/* ...existing

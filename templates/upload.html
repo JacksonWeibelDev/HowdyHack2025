@@ -3,12 +3,22 @@
 {% block title %}Resume Classifier{% endblock %}
 
 {% block content %}
-<!-- Hero section (drop your hero.png into static/) -->
 <section class="hero-section text-center py-5">
   <div class="container reveal slow">
     <img src="{{ url_for('static', filename='hero.png') }}" alt="Hero logo" class="hero-logo mb-3" onerror="this.style.display='none'">
     <h1 class="display-5 fw-bold text-light">Ruzi: Smarter Resume Evaluation</h1>
     <p class="lead text-muted">Upload your resume and job description — let AI show how well they match.</p>
+
+    <!-- Scroll hint: clickable, accessible, bouncing arrow -->
+    <div class="mt-3">
+      <a href="#classify-form" class="scroll-down" aria-label="Scroll down to content">
+        <span class="scroll-text">Scroll for more</span>
+        <!-- simple chevron-down SVG -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" >
+          <polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
   </div>
 </section>
 
