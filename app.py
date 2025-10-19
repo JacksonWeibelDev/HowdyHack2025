@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-from predict import classify_resume, MODEL_DIR
+# Importing ML-heavy modules lazily inside the route to avoid blocking server startup
+MODEL_DIR = "saved_models"
 
 app = Flask(__name__)
 app.config['BRAND'] = 'HowdyHack'
@@ -15,7 +16,7 @@ def index():
 
 @app.route('/about')
 def about():
-    return render_template('index.html', active_page='about')
+    return render_template('about.html', active_page='about')
 
 @app.route('/services')
 def services():
@@ -23,7 +24,7 @@ def services():
 
 @app.route('/contact')
 def contact():
-    return render_template('index.html', active_page='contact')
+    return render_template('contact.html', active_page='contact')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -73,7 +74,13 @@ def classify_resume_route():
     if not resume_text or not job_role:
         return jsonify({"error": "Missing 'resume_text' or 'job_role' in JSON"}), 400
 
-    # Call our imported prediction function
+    # Import the prediction routine lazily so the app can start quickly
+    try:
+        from predict import classify_resume
+    except Exception as e:
+        return jsonify({"error": f"Prediction module could not be loaded: {e}"}), 500
+
+    # Call the prediction function
     result = classify_resume(resume_text, job_role)
 
     # Return the result as JSON
