@@ -84,7 +84,7 @@ if (window.__hh_upload_initialized) {
     // Wait until full page load (images/stylesheets) to start reveal animations to avoid layout jank
     
     window.addEventListener('load', () => {
-      const POST_LOAD_DELAY = 1000; // ms - small buffer after load
+      const POST_LOAD_DELAY = 500; // ms - small buffer after load
       setTimeout(() => {
         try {
           if (!('IntersectionObserver' in window)) {

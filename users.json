@@ -165,6 +165,50 @@
                     "gen_ai_assessment": "This candidate appears to be a Poor match. The provided resume text is unusable for assessment as it contains no relevant information.",
                     "resume_jd_comparison": "No job description provided for comparison.",
                     "improvement_suggestions": "*   **Quantify Project Impact:** Instead of simply listing projects, use numbers to showcase their success. For example, instead of \"Developed a new feature for a web application,\" try \"Developed a new feature that increased user engagement by 15%.\"\n*   **Highlight Key Technical Skills:** Explicitly list programming languages, frameworks, and tools relevant to software engineering in a dedicated \"Skills\" section. If you're proficient in languages like Python, Java, C++, or frameworks like React, Angular, or Spring, make sure they are prominently featured.\n*   **Tailor Experience Descriptions:** For each past role or project, rephrase the responsibilities to emphasize software engineering activities and outcomes. Use action verbs common in software development, such as \"designed,\" \"implemented,\" \"debugged,\" \"optimized,\" and \"tested.\""
+                },
+                {
+                    "timestamp": "2025-10-19 05:31:24",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "Please Don't Hire Me...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "88.47%",
+                    "gen_ai_assessment": "This candidate appears to be a Poor match. The resume contains no relevant information or experience for a Software Engineer role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "*   **Quantify Project Impact:** Instead of just listing projects, add metrics. For example, \"Developed a new feature that reduced processing time by 15%\" or \"Implemented a caching mechanism that improved API response times by 200ms.\" This demonstrates tangible value.\n*   **Highlight Specific Technologies:** Explicitly list programming languages, frameworks, databases, and cloud platforms used in projects. For a Software Engineer role, keywords like \"Java,\" \"Python,\" \"JavaScript,\" \"React,\" \"AWS,\" \"SQL,\" \"Docker,\" etc., are crucial and should be prominently featured.\n*   **Tailor the Summary/Objective:** If a summary or objective statement exists, rephrase it to directly address the requirements of a Software Engineer role. Focus on core competencies relevant to software development, such as problem-solving, algorithm design, and coding proficiency."
+                },
+                {
+                    "timestamp": "2025-10-19 05:33:35",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "Dont hire me...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "88.47%",
+                    "gen_ai_assessment": "This candidate appears to be a Poor match. The resume explicitly states \"Dont hire me,\" indicating no interest or qualification for the role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "*   **Quantify Impact:** Replace vague statements with specific metrics. Instead of \"Improved performance,\" state \"Reduced API response time by 15% through optimized database queries.\"\n*   **Highlight Relevant Technologies:** Explicitly list programming languages, frameworks, databases, and tools used that are common for Software Engineer roles (e.g., Python, Java, C++, JavaScript, React, Angular, Spring Boot, SQL, Docker, Kubernetes, AWS, Azure).\n*   **Showcase Problem-Solving:** Detail challenges faced in projects and how your technical skills were applied to overcome them. For instance, \"Resolved a critical bug in the authentication module, preventing data breaches and ensuring user security.\""
+                },
+                {
+                    "timestamp": "2025-10-19 05:34:50",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "Dont hire me...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "88.47%",
+                    "gen_ai_assessment": "This candidate appears to be a Poor match. The resume explicitly states not to hire them, indicating a clear lack of interest or intent for the role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "*   **Quantify Achievements:** Instead of general descriptions, add metrics to showcase impact. For example, instead of \"Developed new features,\" try \"Developed and launched X new features, resulting in a Y% increase in user engagement.\"\n*   **Tailor Skills Section:** Highlight programming languages, frameworks, and tools directly relevant to common Software Engineer job descriptions. Ensure terms like \"data structures,\" \"algorithms,\" \"object-oriented programming,\" and specific development methodologies (Agile, Scrum) are present if applicable.\n*   **Project Descriptions:** For any personal or academic projects, focus on the *problem solved*, the *technologies used*, and the *outcome*. For instance, \"Built a [Type of Application] using [Languages/Frameworks] to solve [Problem], achieving [Result/Feature].\""
+                },
+                {
+                    "timestamp": "2025-10-19 05:36:24",
+                    "job_role": "Software Engineer",
+                    "job_description_snippet": "N/A",
+                    "resume_snippet": "This is a bad resume...",
+                    "ml_prediction": "Reject",
+                    "ml_confidence": "88.47%",
+                    "gen_ai_assessment": "This candidate appears to be a Poor match.\nThe provided resume text contains no relevant information to assess the candidate's qualifications for a Software Engineer role.",
+                    "resume_jd_comparison": "No job description provided for comparison.",
+                    "improvement_suggestions": "Here are 2-3 specific, actionable suggestions to improve the resume for a Software Engineer role:\n\n*   **Quantify Impact:** Instead of stating \"Developed a new feature,\" quantify the achievement. For example, \"Developed and implemented a new user authentication module, reducing login errors by 15% and improving user retention by 5%.\" This demonstrates tangible results and business value.\n\n*   **Tailor Technology Stack:** For each project or experience, explicitly list the programming languages, frameworks, and tools used. For instance, if a project involved building a web application, mention \"Developed a RESTful API using Node.js and Express, with a PostgreSQL database.\" This helps Applicant Tracking Systems (ATS) identify relevant keywords and showcases proficiency with in-demand technologies.\n\n*   **Highlight Problem-Solving and Collaboration:** Software engineering is about more than just coding. Add bullet points that showcase your ability to solve complex problems or collaborate effectively. Examples: \"Debugged and resolved a critical performance bottleneck in the production environment, increasing application responsiveness by 20%,\" or \"Collaborated with cross-functional teams (Product, QA) to define requirements and deliver features on an agile development cycle.\""
                 }
             ]
         }

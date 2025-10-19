@@ -12,7 +12,7 @@
     <!-- Scroll hint: clickable, accessible, bouncing arrow -->
     <div class="mt-3">
       <a href="#classify-form" class="scroll-down" aria-label="Scroll down to content">
-        <span class="scroll-text">Scroll for more</span>
+        <span class="scroll-text">Scroll to Begin</span>
         <!-- simple chevron-down SVG -->
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" >
           <polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -25,81 +25,98 @@
 <div class="hero-spacer" aria-hidden="true"></div>
 
 <div class="container py-5 mb-5 reveal">
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <form id="classify-form" novalidate>
-        <div class="d-flex flex-column flex-md-row gap-3">
-          <!-- Left column: Job Role + Classification Results stacked -->
-          <div class="d-flex flex-column gap-3 flex-fill">
-            <!-- Job Role Card -->
-            <div class="card card-glow shadow-sm reveal" data-reveal>
-              <div class="card-body">
-                <h2 class="h5 mb-3">Job Role</h2>
-                <div class="mb-3">
-                  <label for="job-role" class="form-label">Job Role (e.g., "Sales", "Software Engineer")</label>
-                  <input type="text" id="job-role" name="job_role" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                  <label for="job-description" class="form-label">Job Description (optional)</label>
-                  <textarea id="job-description" name="job_description" class="form-control" rows="4" placeholder="Brief description of responsibilities or required skills"></textarea>
+  {% if current_user.is_authenticated %}
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <form id="classify-form" novalidate>
+          <div class="d-flex flex-column flex-md-row gap-3">
+            <!-- Left column: Job Role + Classification Results stacked -->
+            <div class="d-flex flex-column gap-3 flex-fill">
+              <!-- Job Role Card -->
+              <div class="card card-glow shadow-sm reveal" data-reveal>
+                <div class="card-body">
+                  <h2 class="h5 mb-3">Job Role</h2>
+                  <div class="mb-3">
+                    <label for="job-role" class="form-label">Job Role (e.g., "Sales", "Software Engineer")</label>
+                    <input type="text" id="job-role" name="job_role" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="job-description" class="form-label">Job Description (optional)</label>
+                    <textarea id="job-description" name="job_description" class="form-control" rows="4" placeholder="Brief description of responsibilities or required skills"></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Classification Results Card -->
-            <div class="card card-glow shadow-sm reveal" data-reveal>
-              <div class="card-body">
-                <h2 class="h5 mb-3">Classification Results</h2>
-                <div id="result-placeholder" class="text-muted">
-                  <p>Results will appear here after classification...</p>
-                </div>
-                <div id="result-container" class="d-none">
-                  <div class="result-card p-3 bg-light rounded">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                      <h3 id="result-role" class="h6 mb-0 text-dark">Role</h3>
-                      <div id="result-badge"></div>
-                    </div>
+              <!-- Classification Results Card -->
+              <div class="card card-glow shadow-sm reveal" data-reveal>
+                <div class="card-body">
+                  <h2 class="h5 mb-3">Classification Results</h2>
+                  <div id="result-placeholder" class="text-muted">
+                    <p>Results will appear here after classification...</p>
+                  </div>
+                  <div id="result-container" class="d-none">
+                    <div class="result-card p-3 bg-light rounded">
+                      <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h3 id="result-role" class="h6 mb-0 text-dark">Role</h3>
+                        <div id="result-badge"></div>
+                      </div>
 
-                    <div id="result-confidence" class="small text-muted mb-2">Confidence: --</div>
+                      <div id="result-confidence" class="small text-muted mb-2">Confidence: --</div>
 
-                    <div id="result-genai" class="mb-2">
-                      <h4 class="h6 mb-1">AI Assessment</h4>
-                      <blockquote id="result-genai-text" class="mb-0 small text-secondary"></blockquote>
-                    </div>
+                      <div id="result-genai" class="mb-2">
+                        <h4 class="h6 mb-1">AI Assessment</h4>
+                        <blockquote id="result-genai-text" class="mb-0 small text-secondary"></blockquote>
+                      </div>
 
-                    <div id="result-jd" class="mb-2">
-                      <h4 class="h6 mb-1">JD Comparison</h4>
-                      <p id="result-jd-text" class="small text-secondary mb-0"></p>
-                    </div>
+                      <div id="result-jd" class="mb-2">
+                        <h4 class="h6 mb-1">JD Comparison</h4>
+                        <p id="result-jd-text" class="small text-secondary mb-0"></p>
+                      </div>
 
-                    <div id="result-improvement" class="mt-3">
-                      <h4 class="h6 mb-2">Improvement Suggestions</h4>
-                      <div id="improvement-suggestions" class="typewriter small text-dark bg-white p-2 rounded" style="white-space:pre-wrap; min-height:48px;"></div>
+                      <div id="result-improvement" class="mt-3">
+                        <h4 class="h6 mb-2">Improvement Suggestions</h4>
+                        <div id="improvement-suggestions" class="typewriter small text-dark p-2 rounded" style="white-space:pre-wrap; min-height:48px;"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Right column: Resume Text -->
-          <div class="card card-glow flex-fill shadow-sm reveal" data-reveal style="height: 100%;">
-            <div class="card-body d-flex flex-column">
-              <h2 class="h5 mb-3">Resume Text</h2>
-              <div class="mb-3 flex-grow-1">
-                <label for="resume-text" class="form-label">Paste Full Resume Text</label>
-                <textarea id="resume-text" name="resume_text" class="form-control" rows="10" required></textarea>
-              </div>
+            <!-- Right column: Resume Text -->
+            <div class="card card-glow flex-fill shadow-sm reveal" data-reveal style="height: 100%;">
+              <div class="card-body d-flex flex-column">
+                <h2 class="h5 mb-3">Resume Text</h2>
+                <div class="mb-3 flex-grow-1">
+                  <label for="resume-text" class="form-label">Paste Full Resume Text</label>
+                  <textarea id="resume-text" name="resume_text" class="form-control" rows="10" required></textarea>
+                </div>
 
-              <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Classify Resume</button>
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-primary">Classify Resume</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
+  {% else %}
+    <div class="row justify-content-center">
+      <div class="col-10 col-md-8 col-lg-6">
+        <div class="card card-glow shadow-sm text-center p-4">
+          <div class="card-body">
+            <h3 class="h5 mb-3">Sign in to classify resumes</h3>
+            <p class="mb-3 text-muted">You must be logged in to upload a resume and view classification results.</p>
+            <div class="d-flex justify-content-center gap-2">
+              <a href="{{ url_for('login') }}" class="btn btn-primary">Log In</a>
+              <a href="{{ url_for('signup') }}" class="btn btn-outline-light">Sign Up</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </div>
 
 {% block scripts %}

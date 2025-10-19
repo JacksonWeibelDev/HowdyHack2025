@@ -394,6 +394,10 @@ footer {
   background: linear-gradient(180deg, rgba(16,10,36,0.99), rgba(30,14,56,0.97));
 }
 
+#improvement-suggestions {
+  background-color: rgba(20,8,60,0.12);
+}
+
 /* keep motion/accessibility preferences in mind */
 @media (prefers-reduced-motion: reduce) {
   #resume-text,
