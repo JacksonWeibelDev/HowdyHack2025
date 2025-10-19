@@ -139,20 +139,32 @@ def classify_resume(resume_text, job_role):
     print("Getting Gen AI assessment using Gemini...")
     gen_ai_result = get_gen_ai_assessment(resume_text, job_role) # Contains assessment text and sentiment
 
-    # --- Part 3: (NEW) Adjust Confidence ---
+    # --- Part 3: (NEW) Adjust Confidence (Dynamic Weighting) ---
     adjusted_confidence_float = ml_confidence_float
-    adjustment_factor = 10.0 # Add/subtract 10 percentage points
+    
+    # --- Define Max/Min Adjustment ---
+    MAX_ADJUSTMENT = 40.0 # Max points to add/subtract (when ML confidence is 0)
+    MIN_ADJUSTMENT = 5.0  # Min points to add/subtract (when ML confidence is 100)
+    # --- End Define ---
 
     if "error" not in ml_result and gen_ai_result["gen_ai_sentiment"] != "Error" and gen_ai_result["gen_ai_sentiment"] != "Neutral":
         gen_ai_positive = gen_ai_result["gen_ai_sentiment"] == "Positive"
         ml_is_select = ml_prediction_label == "Select"
 
+        # --- Calculate Dynamic Adjustment ---
+        # Scale adjustment: Higher when ML confidence is lower
+        adjustment_range = MAX_ADJUSTMENT - MIN_ADJUSTMENT
+        # How far is ML confidence from 100%? (Scaled 0 to 1)
+        confidence_diff_scale = (100.0 - ml_confidence_float) / 100.0 
+        dynamic_adjustment = MIN_ADJUSTMENT + (adjustment_range * confidence_diff_scale)
+        # --- End Calculate ---
+
         if gen_ai_positive == ml_is_select: # They agree
-            print(f"GenAI agrees with ML ({ml_prediction_label}). Boosting confidence.")
-            adjusted_confidence_float = min(100.0, ml_confidence_float + adjustment_factor)
+            print(f"GenAI agrees with ML ({ml_prediction_label}). Boosting confidence by {dynamic_adjustment:.2f}.")
+            adjusted_confidence_float = min(100.0, ml_confidence_float + dynamic_adjustment)
         else: # They disagree
-            print(f"GenAI disagrees with ML ({ml_prediction_label}). Reducing confidence.")
-            adjusted_confidence_float = max(0.0, ml_confidence_float - adjustment_factor)
+            print(f"GenAI disagrees with ML ({ml_prediction_label}). Reducing confidence by {dynamic_adjustment:.2f}.")
+            adjusted_confidence_float = max(0.0, ml_confidence_float - dynamic_adjustment)
     else:
         print("Skipping confidence adjustment due to ML error or neutral/error GenAI sentiment.")
 
@@ -160,7 +172,8 @@ def classify_resume(resume_text, job_role):
     if "error" not in ml_result:
         ml_result = {
             "ml_prediction": ml_prediction_label,
-            "ml_confidence": f"{adjusted_confidence_float:.2f}%" # Format back to string
+            # --- Use the adjusted confidence ---
+            "ml_confidence": f"{adjusted_confidence_float:.2f}%" 
         }
 
     # --- Part 4: Load Pre-Generated Analysis ---
