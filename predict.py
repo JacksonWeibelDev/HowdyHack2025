@@ -2,6 +2,7 @@ import os
 import re
 import joblib
 import numpy as np
+import random
 # Import your GenAI client (Gemini in this case)
 from google import genai
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -81,8 +82,23 @@ def get_gen_ai_assessment(resume_text, job_role):
             sentiment = "Positive"
         elif "weak" in assessment or "poor" in assessment:
             sentiment = "Negative"
-            
-        return {"gen_ai_assessment": response.text, "gen_ai_sentiment": sentiment} # Return original case text
+
+        # Estimate a simple confidence score from wording to give Gemini a variable weight
+        gen_confidence = 0.60
+        if re.search(r'\b(strong|strongly|excellent|outstanding|exceptional|highly)\b', assessment):
+            gen_confidence = 0.92
+        elif re.search(r'\b(very|well|good|solid|suitable|competent)\b', assessment):
+            gen_confidence = 0.78
+        elif re.search(r'\b(somewhat|possibly|maybe|could|might)\b', assessment):
+            gen_confidence = 0.55
+        elif re.search(r'\b(weak|poor|limited|insufficient|not a good)\b', assessment):
+            gen_confidence = 0.22
+
+        return {
+            "gen_ai_assessment": response.text,
+            "gen_ai_sentiment": sentiment,
+            "gen_ai_confidence": gen_confidence
+        } # Return original case text + confidence
 
     except Exception as e:
         print(f"Error calling Google Gemini API: {e}")
@@ -91,7 +107,7 @@ def get_gen_ai_assessment(resume_text, job_role):
            error_details = response.prompt_feedback
         except:
            pass
-        return {"gen_ai_assessment": f"Error calling Google Gemini API: {e}. Feedback: {error_details}", "gen_ai_sentiment": "Error"}
+        return {"gen_ai_assessment": f"Error calling Google Gemini API: {e}. Feedback: {error_details}", "gen_ai_sentiment": "Error", "gen_ai_confidence": 0.5}
 # --- 4. (NEW) Gen AI Resume-JD Comparison Function ---
 def get_resume_jd_comparison(resume_text, job_description, job_role):
     if not job_description or not job_description.strip():
@@ -197,12 +213,24 @@ def classify_resume(resume_text, job_role, job_description=None): # Added job_de
     adjusted_confidence_float = ml_confidence_float
     MAX_ADJUSTMENT = 70.0
     MIN_ADJUSTMENT = 5.0
-    if "error" not in ml_result and gen_ai_result["gen_ai_sentiment"] != "Error" and gen_ai_result["gen_ai_sentiment"] != "Neutral":
+    if "error" not in ml_result and gen_ai_result.get("gen_ai_sentiment") != "Error" and gen_ai_result.get("gen_ai_sentiment") != "Neutral":
         gen_ai_positive = gen_ai_result["gen_ai_sentiment"] == "Positive"
         ml_is_select = ml_prediction_label == "Select"
+
         adjustment_range = MAX_ADJUSTMENT - MIN_ADJUSTMENT
         confidence_diff_scale = (100.0 - ml_confidence_float) / 100.0
-        dynamic_adjustment = MIN_ADJUSTMENT + (adjustment_range * confidence_diff_scale)
+        base_adjustment = MIN_ADJUSTMENT + (adjustment_range * confidence_diff_scale)
+
+        # Use the GenAI confidence estimate to scale the adjustment (more confident => stronger influence)
+        gen_conf = float(gen_ai_result.get("gen_ai_confidence", 0.6))
+        # scale factor centered around ~0.8 and clamped so adjustments don't explode
+        scale = max(0.6, min(1.4, 0.8 + (gen_conf - 0.5)))
+        dynamic_adjustment = base_adjustment * scale
+
+        # Add a small random jitter so the adjustment isn't identical every time (±10%)
+        jitter = random.uniform(-0.10, 0.10) * dynamic_adjustment
+        dynamic_adjustment = max(MIN_ADJUSTMENT, min(MAX_ADJUSTMENT, dynamic_adjustment + jitter))
+
         if gen_ai_positive == ml_is_select:
             print(f"GenAI agrees with ML ({ml_prediction_label}). Boosting confidence by {dynamic_adjustment:.2f}.")
             adjusted_confidence_float = min(100.0, ml_confidence_float + dynamic_adjustment)
