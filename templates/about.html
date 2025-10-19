@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Home — HowdyHack{% endblock %}
+
+{% block content %}
+<section class="about-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-5 mb-4 mb-md-0">
+                <img src="{{ url_for('static', filename='Fire_Gator.jpg') }}" alt="About HowdyHack" class="img-fluid rounded shadow-sm">
+            </div>
+            <div class="col-12 col-md-7">
+                <h1>About Us</h1>
+                <p class="exp">As our project in the 2025 HowdyHack, we decided to create something relevant to all college students: internships.</p>
+                <p>We give top-notch, accurate scores on your resume bases on data from thousands of applicants just like you.</p>
+                <p>You'll receive a score on your realistic chances of getting into the job of your choice as well as constructive feedback on how to improve!</p>
+                   <p>To get in touch, visit our <a href="{{ url_for('contact') }}">contact page</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

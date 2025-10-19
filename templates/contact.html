@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Home — HowdyHack{% endblock %}
+
+{% block content %}
+<section class="contact-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-5 mb-4 mb-md-0">
+                <img src="{{ url_for('static', filename='1000013664.jpg') }}" alt="About HowdyHack" class="img-fluid rounded shadow-sm">
+            </div>
+            <div class="col-12 col-md-7">
+                <h1>About Us</h1>
+                <p class="exp">If you need to contact any one of our team members, you can send us an email at <a href="mailto:joe_mama@tamu.edu">joe_mama@tamu.edu</a>.</p>
+                <p>Or call us at <a href="tel:+18589240180">858-924-0180</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
