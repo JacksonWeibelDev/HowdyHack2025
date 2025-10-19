@@ -38,11 +38,25 @@ def load_user(user_id):
         return User(id=user_id, email=user_data['email'], name=user_data['name'])
     return None
 
-# --- Context Processor (Inject brand AND current_user) ---
+# --- Context Processor (Inject brand, brand_img AND current_user) ---
 @app.context_processor
 def inject_global_vars():
-    """Makes 'brand' and 'current_user' available in all templates."""
-    return {'brand': app.config.get('BRAND', 'Your Brand'), 'current_user': current_user}
+    """Makes 'brand', 'brand_img' and 'current_user' available in all templates.
+
+    If a `static/hero.png` file exists it will be used as the navbar brand image.
+    """
+    brand = app.config.get('BRAND', 'Your Brand')
+    # Prefer a hero image in static/hero.png when available
+    try:
+        hero_path = os.path.join(app.root_path, 'static', 'hero.png')
+        if os.path.exists(hero_path):
+            brand_img = url_for('static', filename='hero.png')
+        else:
+            brand_img = None
+    except Exception:
+        brand_img = None
+
+    return {'brand': brand, 'brand_img': brand_img, 'current_user': current_user}
 
 # --- Routes ---
 @app.route('/')
