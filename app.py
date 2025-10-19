@@ -1,14 +1,8 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-<<<<<<< Updated upstream
-# Importing ML-heavy modules lazily inside the route to avoid blocking server startup
-MODEL_DIR = "saved_models"
-=======
-# --- Flask-Login Imports ---
+from predict import classify_resume, MODEL_DIR
+
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-# -------------------------
-from predict import classify_resume, MODEL_DIR # Assuming predict.py is in the same directory
->>>>>>> Stashed changes
 
 app = Flask(__name__)
 app.config['BRAND'] = 'HowdyHack'
@@ -172,17 +166,7 @@ def classify_resume_route():
     if not resume_text or not job_role:
         return jsonify({"error": "Missing 'resume_text' or 'job_role' in JSON"}), 400
 
-<<<<<<< Updated upstream
-    # Import the prediction routine lazily so the app can start quickly
-    try:
-        from predict import classify_resume
-    except Exception as e:
-        return jsonify({"error": f"Prediction module could not be loaded: {e}"}), 500
-
-    # Call the prediction function
-=======
-    # Call prediction function (already imported)
->>>>>>> Stashed changes
+    # Call our imported prediction function
     result = classify_resume(resume_text, job_role)
 
     if "error" in result:
